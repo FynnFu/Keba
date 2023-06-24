@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.082932405, g: 0.09166632, b: 0.10243223, a: 1}
+  m_IndirectSpecularColor: {r: 0.082862996, g: 0.09167483, b: 0.10263606, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -441,9 +441,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1710561031
+--- !u!1001 &1979404809
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -451,45 +451,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6459571368714300022, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
-      propertyPath: _turnSpeed
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 6459571368714300022, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
-      propertyPath: _cameraSwingSpeed
-
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6459571368714300022, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
-      propertyPath: _cameraSwingAmount
-      value: 6.5
-
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6459571368714300022, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
-      propertyPath: _cameraSwingAmount
-      value: 1
-
-      objectReference: {fileID: 0}
-    - target: {fileID: 6471979751510904425, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
-      propertyPath: m_Radius
-      value: 0.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 6471979751510904425, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
-      propertyPath: m_MinMoveDistance
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8584185101859172278, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 9063590511469080595, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 9063590511469080597, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9063590511469080597, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
       propertyPath: m_LocalPosition.x
