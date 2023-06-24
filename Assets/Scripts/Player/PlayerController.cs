@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
         _camera = GetComponentInChildren<Camera>();
         Cursor.visible = false;
         _cameraSwingOffset = 0f; // Инициализация смещения покачивания камеры
-        _camDeffaultPos = new Vector3(_camera.transform.localPosition.x, _camera.transform.localPosition.y, _camera.transform.localPosition.z);
+        _camDeffaultPos = new Vector3(_camera.transform.localPosition.y, _camera.transform.localPosition.y, _camera.transform.localPosition.y);
     }
 
     private void Update()
@@ -86,6 +86,6 @@ public class PlayerController : MonoBehaviour
         Debug.Log(_cameraSwingOffset);
 
         _camera.transform.localRotation = UnityEngine.Quaternion.Euler(_camRotation, 0f, 0f);
-        _camera.transform.localPosition = new Vector3((_camDeffaultPos.y + _cameraSwingOffset / 10), (_camDeffaultPos.y + _cameraSwingOffset / 10), 0);
+        _camera.transform.localPosition = new Vector3(0, (_camDeffaultPos.y + _cameraSwingOffset / 10), 0);
     }
 }
