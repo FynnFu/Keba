@@ -39,6 +39,7 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
         }
+        interactionUI.SetActive(hitSomething);
     } 
 
 }
