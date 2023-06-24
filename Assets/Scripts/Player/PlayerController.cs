@@ -57,5 +57,6 @@ public class PlayerController : MonoBehaviour
         _camRotation -= _mouseVerticalInput;
         _camRotation = Mathf.Clamp(_camRotation, -_maxAngle, _minAngle);
         return _camRotation;
+
     }
 }
