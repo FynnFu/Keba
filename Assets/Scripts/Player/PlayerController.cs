@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _characterSpeed;
     private CharacterController _characterController;
     private Camera _camera;
-    private Vector3 _camDeffaultPos;
     private Vector3 _move;
     private float _camRotation;
     private float _vertivalInput;
@@ -22,11 +21,6 @@ public class PlayerController : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _camera = GetComponentInChildren<Camera>();
         Cursor.visible = false;
-<<<<<<< HEAD
-=======
-        _cameraSwingOffset = 0f; // Инициализация смещения покачивания камеры
-        _camDeffaultPos = new Vector3(_camera.transform.localPosition.y, _camera.transform.localPosition.y, _camera.transform.localPosition.y);
->>>>>>> origin/main
     }
 
     private void Update()
@@ -39,11 +33,7 @@ public class PlayerController : MonoBehaviour
 
     private void GetInput()
     {
-<<<<<<< HEAD
         _vertivalInput = Input.GetAxis("Vertical") * _characterSpeed * Time.deltaTime;
-=======
-        _verticalInput = Input.GetAxis("Vertical") * _characterSpeed * Time.deltaTime;
->>>>>>> origin/main
         _horizontalInput = Input.GetAxis("Horizontal") * _characterSpeed * Time.deltaTime;
         _mouseHorizontalInput = Input.GetAxis("Mouse X") * _turnSpeed * Time.deltaTime;
         _mouseVerticalInput = Input.GetAxis("Mouse Y") * _turnSpeed * Time.deltaTime;
@@ -54,15 +44,9 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerMove()
     {
-<<<<<<< HEAD
         _move = (_vertivalInput * transform.forward) + (_horizontalInput * transform.right); // Вектор движения
         _characterController.Move(_move); // Движение в пространствве
         _characterController.SimpleMove(Vector3.down * _gravityStrenght); // Гравитация
-=======
-        _move = (_verticalInput * transform.forward) + (_horizontalInput * transform.right); // Вектор движения
-        _characterController.Move(_move); // Движение в пространствве
-        _characterController.SimpleMove(Vector3.down * _gravityStrength); // Гравитация
->>>>>>> origin/main
     }
 
     private void CamRotate() => _camera.transform.localRotation = Quaternion.Euler(CamCropAngle(), 0f, 0f);
@@ -72,27 +56,6 @@ public class PlayerController : MonoBehaviour
     {
         _camRotation -= _mouseVerticalInput;
         _camRotation = Mathf.Clamp(_camRotation, -_maxAngle, _minAngle);
-<<<<<<< HEAD
         return _camRotation;
     }
 }
-=======
-
-        // Рассчитываем смещение покачивания камеры при передвижении
-        if (_isMoving)
-        {
-            _cameraSwingOffset = Mathf.Sin(Time.time * _cameraSwingSpeed) * _cameraSwingAmount;
-        }
-        else
-        {
-            // Плавное затухание покачивания камеры при остановке персонажа
-            _cameraSwingOffset = Mathf.Lerp(_cameraSwingOffset, 0f, Time.deltaTime * _cameraSwingSpeed);
-        }
-
-        Debug.Log(_cameraSwingOffset);
-
-        _camera.transform.localRotation = UnityEngine.Quaternion.Euler(_camRotation, 0f, 0f);
-        _camera.transform.localPosition = new Vector3(0, (_camDeffaultPos.y + _cameraSwingOffset / 10), 0);
-    }
-}
->>>>>>> origin/main
