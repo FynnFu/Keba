@@ -44,8 +44,8 @@ public class PlayerController : MonoBehaviour
 
     private void GetInput()
     {
-        _verticalInput = Input.GetAxis("Vertical");
-        _horizontalInput = Input.GetAxis("Horizontal");
+        _verticalInput = Input.GetAxis("Vertical") * _characterSpeed * Time.deltaTime;
+        _horizontalInput = Input.GetAxis("Horizontal") * _characterSpeed * Time.deltaTime;
         _mouseHorizontalInput = Input.GetAxis("Mouse X") * _turnSpeed * Time.deltaTime;
         _mouseVerticalInput = Input.GetAxis("Mouse Y") * _turnSpeed * Time.deltaTime;
 
@@ -61,10 +61,9 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerMove()
     {
-        _move = (_verticalInput * transform.forward) + (_horizontalInput * transform.right);
-        _move.Normalize();
-        _characterController.Move(_move * _characterSpeed * Time.deltaTime);
-        _characterController.SimpleMove(Vector3.down * _gravityStrength);
+        _move = (_verticalInput * transform.forward) + (_horizontalInput * transform.right); // Вектор движения
+        _characterController.Move(_move); // Движение в пространствве
+        _characterController.SimpleMove(Vector3.down * _gravityStrength); // Гравитация
     }
 
     private void CamRotate()
