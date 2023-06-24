@@ -26,15 +26,19 @@ public class PlayerInteraction : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactionDistance))
         {
+
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
 
             if (interactable != null)
             {
+
                 hitSomething = true;
                 interactionText.text = interactable.GetDescription();
 
                 if (Input.GetKeyDown(KeyCode.E))
                 {
+                    Debug.Log("InteractionRay");
+
                     interactable.Interact();
                 }
             }
