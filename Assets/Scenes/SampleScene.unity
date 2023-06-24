@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.082862996, g: 0.09167483, b: 0.10263606, a: 1}
+  m_IndirectSpecularColor: {r: 0.082932405, g: 0.09166632, b: 0.10243223, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -453,19 +453,35 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6459571368714300022, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
       propertyPath: _turnSpeed
-      value: 1200
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 6459571368714300022, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
       propertyPath: _cameraSwingSpeed
+<<<<<<< HEAD
       value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 6459571368714300022, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
       propertyPath: _cameraSwingAmount
       value: 6.5
+=======
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459571368714300022, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
+      propertyPath: _cameraSwingAmount
+      value: 1
+>>>>>>> origin/main
       objectReference: {fileID: 0}
     - target: {fileID: 6471979751510904425, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
       propertyPath: m_Radius
       value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 6471979751510904425, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
+      propertyPath: m_MinMoveDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584185101859172278, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9063590511469080595, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
       propertyPath: m_Name
