@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _cameraSwingAmount; // Амплитуда покачивания камеры
     private CharacterController _characterController;
     private Camera _camera;
+    private Vector3 _camDeffaultPos;
     private Vector3 _move;
     private float _camRotation;
     private float _verticalInput;
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
         _camera = GetComponentInChildren<Camera>();
         Cursor.visible = false;
         _cameraSwingOffset = 0f; // Инициализация смещения покачивания камеры
+        _camDeffaultPos = new Vector3(_camera.transform.localPosition.x, _camera.transform.localPosition.y, _camera.transform.localPosition.z);
     }
 
     private void Update()
@@ -67,30 +69,23 @@ public class PlayerController : MonoBehaviour
 
     private void CamRotate()
     {
-        if (_isMoving && !_isColliding)
-        {
-            _camRotation -= _mouseVerticalInput;
-            _camRotation = Mathf.Clamp(_camRotation, -_maxAngle, _minAngle);
+        _camRotation -= _mouseVerticalInput;
+        _camRotation = Mathf.Clamp(_camRotation, -_maxAngle, _minAngle);
 
-            // Рассчитываем смещение покачивания камеры при передвижении
+        // Рассчитываем смещение покачивания камеры при передвижении
+        if (_isMoving)
+        {
             _cameraSwingOffset = Mathf.Sin(Time.time * _cameraSwingSpeed) * _cameraSwingAmount;
         }
         else
         {
-            // Плавное затухание покачивания камеры при остановке персонажа или столкновении
+            // Плавное затухание покачивания камеры при остановке персонажа
             _cameraSwingOffset = Mathf.Lerp(_cameraSwingOffset, 0f, Time.deltaTime * _cameraSwingSpeed);
         }
 
-        _camera.transform.localRotation = Quaternion.Euler(_camRotation + _cameraSwingOffset, 0f, 0f);
-    }
+        Debug.Log(_cameraSwingOffset);
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        _isColliding = true;
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        _isColliding = false;
+        _camera.transform.localRotation = UnityEngine.Quaternion.Euler(_camRotation, 0f, 0f);
+        _camera.transform.localPosition = new Vector3((_camDeffaultPos.y + _cameraSwingOffset / 10), (_camDeffaultPos.y + _cameraSwingOffset / 10), 0);
     }
 }
