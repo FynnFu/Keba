@@ -457,19 +457,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6459571368714300022, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
       propertyPath: _cameraSwingSpeed
-<<<<<<< HEAD
+
       value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 6459571368714300022, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
       propertyPath: _cameraSwingAmount
       value: 6.5
-=======
+
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6459571368714300022, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
       propertyPath: _cameraSwingAmount
       value: 1
->>>>>>> origin/main
+
       objectReference: {fileID: 0}
     - target: {fileID: 6471979751510904425, guid: 0f7a6a2fe6515eb4b8a014f51c489071, type: 3}
       propertyPath: m_Radius
