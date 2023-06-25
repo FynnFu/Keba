@@ -5,16 +5,19 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Максимальный угол поворота камеры")][SerializeField] private float _maxAngle; // Максимальный угол поворота для камеры
     [Tooltip("Минимальный угол поворота камеры")][SerializeField] private float _minAngle; // Минимальный угол поворота для камеры
     [Tooltip("Чувствительность мыши")][SerializeField] private float _turnSpeed; // Сенса
-    [SerializeField] private float _characterSpeed;
+    [Tooltip("Скорость персонажа")][SerializeField] private float _characterSpeed;
     private CharacterController _characterController;
     private Camera _camera;
     private Vector3 _move;
     private float _camRotation;
-    private float _vertivalInput;
+    private float _verticalInput;
     private float _horizontalInput;
     private float _mouseHorizontalInput;
     private float _mouseVerticalInput;
     private float _gravityStrenght = 9.87f;
+    public float VerticalInput { get => _verticalInput; }
+    public float HorizontalInput { get => _horizontalInput; }
+    public float CharacterSpeed { get => _characterSpeed; }
 
     private void Start()
     {
@@ -33,7 +36,7 @@ public class PlayerController : MonoBehaviour
 
     private void GetInput()
     {
-        _vertivalInput = Input.GetAxis("Vertical") * _characterSpeed * Time.deltaTime;
+        _verticalInput = Input.GetAxis("Vertical") * _characterSpeed * Time.deltaTime;
         _horizontalInput = Input.GetAxis("Horizontal") * _characterSpeed * Time.deltaTime;
         _mouseHorizontalInput = Input.GetAxis("Mouse X") * _turnSpeed * Time.deltaTime;
         _mouseVerticalInput = Input.GetAxis("Mouse Y") * _turnSpeed * Time.deltaTime;
@@ -44,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerMove()
     {
-        _move = (_vertivalInput * transform.forward) + (_horizontalInput * transform.right); // Вектор движения
+        _move = (_verticalInput * transform.forward) + (_horizontalInput * transform.right); // Вектор движения
         _characterController.Move(_move); // Движение в пространствве
         _characterController.SimpleMove(Vector3.down * _gravityStrenght); // Гравитация
     }
@@ -57,6 +60,5 @@ public class PlayerController : MonoBehaviour
         _camRotation -= _mouseVerticalInput;
         _camRotation = Mathf.Clamp(_camRotation, -_maxAngle, _minAngle);
         return _camRotation;
-
     }
 }
