@@ -5,26 +5,23 @@ using TMPro;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public Camera _camera;
-    public float interactionDistance = 10f;
+    [SerializeField] private Camera _camera;
+    [SerializeField] private GameObject _interactionUI;
+    [SerializeField] private TextMeshProUGUI _interactionText;
+    [SerializeField] private float _interactionDistance;
+    private bool _rayValue;
+    public bool RayValue { get => _rayValue; }
 
-    public GameObject interactionUI;
-    public TextMeshProUGUI interactionText;
-
-    // Update is called once per frame
-    void Update()
-    {
-        InteractionRay();
-    }
-
+    void Update() => InteractionRay();
+    
     void InteractionRay()
     {
-        Ray ray = _camera.ViewportPointToRay(Vector3.one / 2f);
+        Ray _ray = _camera.ViewportPointToRay(Vector3.one / 2f);
         RaycastHit hit;
 
         bool hitSomething = false;
-
-        if (Physics.Raycast(ray, out hit, interactionDistance))
+        _rayValue = Physics.Raycast(_ray, out hit, _interactionDistance);
+        if (_rayValue == true)
         {
 
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
@@ -33,7 +30,7 @@ public class PlayerInteraction : MonoBehaviour
             {
 
                 hitSomething = true;
-                interactionText.text = interactable.GetDescription();
+                _interactionText.text = interactable.GetDescription();
 
                 if (Input.GetKeyDown(KeyCode.E))
                 {
@@ -43,7 +40,7 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
         }
-        interactionUI.SetActive(hitSomething);
+        _interactionUI.SetActive(hitSomething);
     } 
 
 }
