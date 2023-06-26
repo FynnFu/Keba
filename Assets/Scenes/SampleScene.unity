@@ -564,7 +564,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5921935914169958902, guid: 420a4eea059ba6f478d0b16ff1db6dbd, type: 3}
       propertyPath: _camSwingAmount
-      value: 0.1
+      value: 0.07
       objectReference: {fileID: 0}
     - target: {fileID: 5921935914169958902, guid: 420a4eea059ba6f478d0b16ff1db6dbd, type: 3}
       propertyPath: _cameraSwingAmount
@@ -572,7 +572,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5921935914169958902, guid: 420a4eea059ba6f478d0b16ff1db6dbd, type: 3}
       propertyPath: _camSwingMultiplier
-      value: 2.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5921935914169958902, guid: 420a4eea059ba6f478d0b16ff1db6dbd, type: 3}
       propertyPath: _cameraSwingMultiplier

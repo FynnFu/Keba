@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerCam : MonoBehaviour
 {
     [Tooltip("Скорость покачивания камеры")][Range(1f, 10f)][SerializeField] private float _camSwingMultiplier;
-    [Tooltip("Дистанция покачивания")] [Range (0.01f, 1f)] [SerializeField] private float _camSwingAmount;
+    [Tooltip("Дистанция покачивания")][Range(0.01f, 1f)][SerializeField] private float _camSwingAmount;
     private PlayerController _playerController;
     private PlayerInteraction _playerInteraction;
     private Vector3 _camDeffaultPos;
@@ -25,7 +25,7 @@ public class PlayerCam : MonoBehaviour
     }
 
     void Update() => CameraSwing();
-    
+
     private void CameraSwing()
     {
         // Проверяем, если персонаж движется, чтобы активировать покачивание камеры
@@ -42,10 +42,10 @@ public class PlayerCam : MonoBehaviour
         else
         {
             // Плавное затухание покачивания камеры при остановке персонажа
-            SwingSmoother(_camSwingOffsetY, 0f);
-            SwingSmoother(_camSwingOffsetX, 0f);
+            _camSwingOffsetY = SwingSmoother(_camSwingOffsetY, 0f);
+            _camSwingOffsetX = SwingSmoother(_camSwingOffsetX, 0f);
         }
-        transform.localPosition = new Vector3(_camDeffaultPos.x + _camSwingOffsetX, _camDeffaultPos.y + _camSwingOffsetY, 0);
+        transform.localPosition = new Vector3(_camSwingOffsetX + _camDeffaultPos.x, _camSwingOffsetY + _camDeffaultPos.y, 0);
     }
 
     // Сглаживание покачивания
