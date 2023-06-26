@@ -3,13 +3,16 @@ using UnityEngine;
 
 public class PlayerCam : MonoBehaviour
 {
-    [Tooltip("Скорость покачивания камеры")][Range(1f, 10f)][SerializeField] private float _cameraSwingMultiplier;
-    [Tooltip("Дистанция покачивания")] [Range (0.01f, 1f)] [SerializeField] private float _cameraSwingAmount;
+    [Tooltip("Скорость покачивания камеры")][Range(1f, 10f)][SerializeField] private float _camSwingMultiplier;
+    [Tooltip("Дистанция покачивания")] [Range (0.01f, 1f)] [SerializeField] private float _camSwingAmount;
     private PlayerController _playerController;
     private PlayerInteraction _playerInteraction;
     private Vector3 _camDeffaultPos;
-    private float _cameraSwingOffsetY;
-    private float _cameraSwingOffsetX;
+    private float _camSwingSpeed;
+    private float _sinusTimerY;
+    private float _sinusTimerX;
+    private float _camSwingOffsetY;
+    private float _camSwingOffsetX;
     private bool _isMoving;
     private const float _CamTimeDividerX = 2;
 
@@ -17,7 +20,8 @@ public class PlayerCam : MonoBehaviour
     {
         _playerController = FindObjectOfType<PlayerController>();
         _playerInteraction = FindObjectOfType<PlayerInteraction>();
-        _camDeffaultPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.y);
+        _camSwingSpeed = _camSwingMultiplier * _playerController.CharacterSpeed; // Скорость покачивания
+        _camDeffaultPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.y); // Начаальная позиция камеры
     }
 
     void Update() => CameraSwing();
@@ -30,16 +34,21 @@ public class PlayerCam : MonoBehaviour
         // Рассчитываем смещение покачивания камеры при передвижении
         if (_isMoving && _playerInteraction.RayValue == false)
         {
-            _cameraSwingOffsetY = Mathf.Sin(Time.time * (_cameraSwingMultiplier * _playerController.CharacterSpeed) ) * _cameraSwingAmount;
-            _cameraSwingOffsetX = Mathf.Sin(Time.time * (_cameraSwingMultiplier * _playerController.CharacterSpeed / _CamTimeDividerX)) * _cameraSwingAmount;
+            _sinusTimerY = Mathf.Sin(Time.time * _camSwingSpeed) * _camSwingAmount; // Позиция смещения по синусу
+            _sinusTimerX = Mathf.Sin(Time.time * _camSwingSpeed / _CamTimeDividerX) * _camSwingAmount; // Позиция смещения по синусу
+            _camSwingOffsetY = SwingSmoother(_camSwingOffsetY, _sinusTimerY);
+            _camSwingOffsetX = SwingSmoother(_camSwingOffsetX, _sinusTimerX);
         }
         else
         {
             // Плавное затухание покачивания камеры при остановке персонажа
-            _cameraSwingOffsetY = Mathf.Lerp(_cameraSwingOffsetY, 0f, Time.deltaTime * (_cameraSwingMultiplier * _playerController.CharacterSpeed));
-            _cameraSwingOffsetX = Mathf.Lerp(_cameraSwingOffsetX, 0f, Time.deltaTime * (_cameraSwingMultiplier * _playerController.CharacterSpeed));
+            SwingSmoother(_camSwingOffsetY, 0f);
+            SwingSmoother(_camSwingOffsetX, 0f);
         }
-        transform.localPosition = new Vector3(_camDeffaultPos.x + _cameraSwingOffsetX, _camDeffaultPos.y + _cameraSwingOffsetY, 0);
+        transform.localPosition = new Vector3(_camDeffaultPos.x + _camSwingOffsetX, _camDeffaultPos.y + _camSwingOffsetY, 0);
     }
+
+    // Сглаживание покачивания
+    private float SwingSmoother(float axis, float pos) => Mathf.Lerp(axis, pos, Time.deltaTime * (_camSwingMultiplier * _playerController.CharacterSpeed));
 }
 
