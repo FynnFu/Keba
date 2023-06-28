@@ -5,7 +5,9 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Максимальный угол поворота камеры")][SerializeField] private float _maxAngle; // Максимальный угол поворота для камеры
     [Tooltip("Минимальный угол поворота камеры")][SerializeField] private float _minAngle; // Минимальный угол поворота для камеры
     [Tooltip("Чувствительность мыши")][SerializeField] private float _turnSpeed; // Сенса
-    [Tooltip("Скорость персонажа")][SerializeField] private float _characterSpeed;
+    [Tooltip("Скорость персонажа")][SerializeField] private float _defaultSpeed;
+    [Tooltip("Скорость спринтаа персонажа")][SerializeField] private float _sprintSpeed;
+    private float _characterSpeed;
     private CharacterController _characterController;
     private Camera _camera;
     private Vector3 _move;
@@ -36,6 +38,7 @@ public class PlayerController : MonoBehaviour
 
     private void GetInput()
     {
+        _characterSpeed = Input.GetKey(KeyCode.LeftShift) ? _sprintSpeed : _defaultSpeed;
         _verticalInput = Input.GetAxis("Vertical") * _characterSpeed * Time.deltaTime;
         _horizontalInput = Input.GetAxis("Horizontal") * _characterSpeed * Time.deltaTime;
         _mouseHorizontalInput = Input.GetAxis("Mouse X") * _turnSpeed * Time.deltaTime;

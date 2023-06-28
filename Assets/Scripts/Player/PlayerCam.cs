@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerCam : MonoBehaviour
 {
     [Tooltip("Скорость покачивания камеры")][Range(1f, 10f)][SerializeField] private float _camSwingMultiplier;
-    [Tooltip("Дистанция покачивания")][Range(0.01f, 1f)][SerializeField] private float _camSwingAmount;
+    [Tooltip("Дистанция покачивания")] [Range (0.01f, 1f)] [SerializeField] private float _camSwingAmount;
     private PlayerController _playerController;
     private PlayerInteraction _playerInteraction;
     private Vector3 _camDeffaultPos;
@@ -20,14 +20,15 @@ public class PlayerCam : MonoBehaviour
     {
         _playerController = FindObjectOfType<PlayerController>();
         _playerInteraction = FindObjectOfType<PlayerInteraction>();
-        _camSwingSpeed = _camSwingMultiplier * _playerController.CharacterSpeed; // Скорость покачивания
         _camDeffaultPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.y); // Начаальная позиция камеры
     }
 
     void Update() => CameraSwing();
-
+    
     private void CameraSwing()
     {
+        _camSwingSpeed = _camSwingMultiplier * _playerController.CharacterSpeed; // Скорость покачивания
+
         // Проверяем, если персонаж движется, чтобы активировать покачивание камеры
         _isMoving = Mathf.Abs(_playerController.VerticalInput) > 0f || Mathf.Abs(_playerController.HorizontalInput) > 0f;
 
