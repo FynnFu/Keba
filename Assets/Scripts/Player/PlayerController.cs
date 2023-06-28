@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
 
     private void GetInput()
     {
-        _characterSpeed = Input.GetKey(KeyCode.LeftShift) ? _sprintSpeed : _defaultSpeed;
+        _characterSpeed = Input.GetKey(KeyCode.LeftControl) ? _sprintSpeed : _defaultSpeed;
         _verticalInput = Input.GetAxis("Vertical") * _characterSpeed * Time.deltaTime;
         _horizontalInput = Input.GetAxis("Horizontal") * _characterSpeed * Time.deltaTime;
         _mouseHorizontalInput = Input.GetAxis("Mouse X") * _turnSpeed * Time.deltaTime;
