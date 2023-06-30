@@ -15,7 +15,7 @@ public class PlayerCam : MonoBehaviour
     private float _camSwingOffsetX;
     private bool _isMoving;
     private const float _CamTimeDividerX = 2;
-    public float SinusTimerY { get => _sinusTimerY; }
+    public float CamSwingOffsetY { get => _camSwingOffsetY; }
     public float СamSwingAmount { get => _camSwingAmount; }
 
     void Start()
@@ -50,7 +50,6 @@ public class PlayerCam : MonoBehaviour
         }
 
         transform.localPosition = new Vector3(_camSwingOffsetX + _camDeffaultPos.x, _camSwingOffsetY + _camDeffaultPos.y, 0);
-        Debug.Log(_sinusTimerY);
     }
 
     // Сглаживание покачивания
