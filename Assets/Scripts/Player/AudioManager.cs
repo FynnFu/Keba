@@ -5,12 +5,12 @@ using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCou
 public class AudioManager : MonoBehaviour
 {
     [Tooltip("Стандартный звук шагов")][SerializeField] private AudioClip _stepDefault;
+    [Tooltip("Минимальная громкость шагов")][SerializeField] private float _minVolume;
+    [Tooltip("Максимальная громкость шагов")][SerializeField] private float _maxVolume;
+    [Tooltip("Минимальная тональность шагов")][SerializeField] private float _minPitch;
+    [Tooltip("Максимальная тональность шагов")][SerializeField] private float _maxPitch;
     private PlayerCam _playerCam;
     private AudioSource _audioSource;
-    private float _minVolume = 0.5f;
-    private float _maxVolume = 1f;
-    private float _minPitch;
-    private float _maxPitch;
     private int _counter;
     private const int _MaxCountVal = 2;
     void Start()
@@ -29,25 +29,30 @@ public class AudioManager : MonoBehaviour
         if (_playerCam.CamSwingOffsetY < 0 && _counter < _MaxCountVal) _counter++;
         else if (_playerCam.CamSwingOffsetY >= 0) _counter = 0;
 
-        if (_counter == 1)
-        {
-            _audioSource.PlayOneShot(_stepDefault);
+        if (_counter == 1) 
+        { 
+            StepRandomizer(); 
+            _audioSource.PlayOneShot(_stepDefault); 
         }
+    }
+
+    private void StepRandomizer()
+    {
+        _audioSource.volume = Random.Range(_minVolume, _maxVolume);
+        _audioSource.pitch = Random.Range(_minPitch, _maxPitch);
     }
 
 
 
-    /*private float StepRandomizer()
+    /*if(_isPlay == false)
     {
-        return 
-    }*/
-
-    /*private void PlayStep()
+        _audioSource.PlayOneShot(_stepDefault);
+        _isPlay = true;
+    }
+            else if (_isPlay == true)
     {
-        Debug.Log(_counter);
-        if (_playerCam.CamSwingOffsetY < 0 && _counter < 2) _counter++;
-        else if (_playerCam.CamSwingOffsetY >= 0) _counter = 0;
-        if (_counter == 1) _audioSource.PlayOneShot(_stepDefault);
+        _audioSource.PlayOneShot(_stepDefault1);
+        _isPlay = false;
     }*/
 }
 

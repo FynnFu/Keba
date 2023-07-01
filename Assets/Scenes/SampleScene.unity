@@ -1332,6 +1332,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2326382866406690621, guid: be6e2021fded5dc4fafbfc6fa4463079, type: 3}
+      propertyPath: _camSwingAmount
+      value: 0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 2326382866406690621, guid: be6e2021fded5dc4fafbfc6fa4463079, type: 3}
+      propertyPath: _camSwingMultiplier
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4114586551806454845, guid: be6e2021fded5dc4fafbfc6fa4463079, type: 3}
       propertyPath: m_ClearFlags
       value: 1
