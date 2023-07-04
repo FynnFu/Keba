@@ -53,6 +53,7 @@ public class AudioManager : MonoBehaviour
     {
         _audioSource.PlayOneShot(_stepDefault1);
         _isPlay = false;
+    639554
     }*/
 }
 
