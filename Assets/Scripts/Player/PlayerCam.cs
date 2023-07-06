@@ -4,7 +4,8 @@ using UnityEngine;
 public class PlayerCam : MonoBehaviour
 {
     [Tooltip("Скорость покачивания камеры")][Range(1f, 10f)][SerializeField] private float _camSwingMultiplier;
-    [Tooltip("Дистанция покачивания")] [Range (0.01f, 1f)] [SerializeField] private float _camSwingAmount;
+    [Tooltip("Дистанция покачивания по вертикали")] [Range (0.01f, 1f)] [SerializeField] private float _camSwingAmountY;
+    [Tooltip("Дистанция покачивания по горизонтали")][Range(0.01f, 1f)][SerializeField] private float _camSwingAmountX;
     private PlayerController _playerController;
     private PlayerInteraction _playerInteraction;
     private Vector3 _camDeffaultPos;
@@ -16,7 +17,6 @@ public class PlayerCam : MonoBehaviour
     private bool _isMoving;
     private const float _CamTimeDividerX = 2;
     public float CamSwingOffsetY { get => _camSwingOffsetY; }
-    public float СamSwingAmount { get => _camSwingAmount; }
 
     void Start()
     {
@@ -37,8 +37,8 @@ public class PlayerCam : MonoBehaviour
         // Рассчитываем смещение покачивания камеры при передвижении
         if (_isMoving && _playerInteraction.RayValue == false)
         {
-            _sinusTimerY = Mathf.Sin(Time.time * _camSwingSpeed) * _camSwingAmount; // Позиция смещения по синусу
-            _sinusTimerX = Mathf.Sin(Time.time * _camSwingSpeed / _CamTimeDividerX) * _camSwingAmount; // Позиция смещения по синусу
+            _sinusTimerY = Mathf.Sin(Time.time * _camSwingSpeed) * _camSwingAmountY; // Позиция смещения по синусу
+            _sinusTimerX = Mathf.Sin(Time.time * _camSwingSpeed / _CamTimeDividerX) * _camSwingAmountX; // Позиция смещения по синусу
             _camSwingOffsetY = SwingSmoother(_camSwingOffsetY, _sinusTimerY);
             _camSwingOffsetX = SwingSmoother(_camSwingOffsetX, _sinusTimerX);
         }

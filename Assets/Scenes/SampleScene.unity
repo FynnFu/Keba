@@ -1117,6 +1117,14 @@ PrefabInstance:
       propertyPath: _interactionText
       value: 
       objectReference: {fileID: 1896909468}
+    - target: {fileID: 6796943969103468374, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
+      propertyPath: _camSwingAmountX
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 6796943969103468374, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
+      propertyPath: _camSwingAmountY
+      value: 0.07
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
