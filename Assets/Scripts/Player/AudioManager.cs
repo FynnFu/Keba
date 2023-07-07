@@ -4,17 +4,19 @@ using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCou
 
 public class AudioManager : MonoBehaviour
 {
-    [Tooltip("Стандартный звук шагов")][SerializeField] private AudioClip _stepDefault;
+    [Tooltip("Стандартный звук шагов")][SerializeField] private AudioClip[] _steps;
     [Tooltip("Минимальная громкость шагов")][SerializeField] private float _minVolume;
     [Tooltip("Максимальная громкость шагов")][SerializeField] private float _maxVolume;
     [Tooltip("Минимальная тональность шагов")][SerializeField] private float _minPitch;
     [Tooltip("Максимальная тональность шагов")][SerializeField] private float _maxPitch;
     private PlayerCam _playerCam;
+    private PlayerController _playerController;
     private AudioSource _audioSource;
     private int _counter;
     private const int _MaxCountVal = 2;
     void Start()
     {
+        _playerController = FindAnyObjectByType<PlayerController>();
         _playerCam = FindAnyObjectByType<PlayerCam>();
         _audioSource = GetComponent<AudioSource>();
     }
@@ -31,8 +33,8 @@ public class AudioManager : MonoBehaviour
 
         if (_counter == 1) 
         { 
-            StepRandomizer(); 
-            _audioSource.PlayOneShot(_stepDefault); 
+            StepRandomizer();
+            _audioSource.PlayOneShot(_steps[Random.Range(0, _steps.Length)]); 
         }
     }
 
