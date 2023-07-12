@@ -150,15 +150,15 @@ AudioReverbZone:
   m_Enabled: 1
   m_MinDistance: 22.733952
   m_MaxDistance: 25.967665
-  m_ReverbPreset: 13
+  m_ReverbPreset: 5
   m_Room: -1000
-  m_RoomHF: -300
-  m_DecayTime: 1.49
-  m_DecayHFRatio: 0.59
-  m_Reflections: -1219
-  m_ReflectionsDelay: 0.007
-  m_Reverb: 441
-  m_ReverbDelay: 0.011
+  m_RoomHF: -6000
+  m_DecayTime: 0.5
+  m_DecayHFRatio: 0.1
+  m_Reflections: -1376
+  m_ReflectionsDelay: 0.003
+  m_Reverb: -1104
+  m_ReverbDelay: 0.004
   m_HFReference: 5000
   m_Diffusion: 100
   m_Density: 100
@@ -783,7 +783,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: eba713055edc67145b13d8acc61c192e, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.15
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1115,11 +1115,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3036310484039744455, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
       propertyPath: _maxVolume
-      value: 1
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 3036310484039744455, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
       propertyPath: _minVolume
-      value: 0.55
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3036310484039744455, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
       propertyPath: _steps.Array.size
@@ -1147,7 +1147,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 729345612a218c64c9814fe7ce7be3fc, type: 3}
     - target: {fileID: 3863636410943592536, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
       propertyPath: m_Volume
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6382021274870451015, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
       propertyPath: m_Name
@@ -1406,7 +1406,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.20000005, y: 0.20000005}
+  m_SizeDelta: {x: 0.15, y: 0.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1982041526
 MonoBehaviour:
