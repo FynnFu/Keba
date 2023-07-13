@@ -3,12 +3,15 @@ using UnityEngine;
 
 public class PlayerCam : MonoBehaviour
 {
-    [Tooltip("Скорость покачивания камеры")][Range(1f, 10f)][SerializeField] private float _camSwingMultiplier;
+    [Tooltip("Скорость покачивания камеры")] [Range(1f, 10f)] [SerializeField] private float _camSwingMultiplier;
     [Tooltip("Дистанция покачивания по вертикали")] [Range (0.01f, 1f)] [SerializeField] private float _camSwingAmountY;
-    [Tooltip("Дистанция покачивания по горизонтали")][Range(0.01f, 1f)][SerializeField] private float _camSwingAmountX;
+    [Tooltip("Дистанция покачивания по горизонтали")] [Range(0.01f, 1f)] [SerializeField] private float _camSwingAmountX;
+    [Tooltip("Позиция камеры в приседе")] [Range(0.1f, 1f)] [SerializeField] private float _squatOffset;
+    [Tooltip("Скорость приседания")] [SerializeField] private float _squatSpeed;
     private PlayerController _playerController;
     private PlayerInteraction _playerInteraction;
     private Vector3 _camDeffaultPos;
+    private Vector3 _camPos;
     private float _camSwingSpeed;
     private float _sinusTimerY;
     private float _sinusTimerX;
@@ -22,10 +25,15 @@ public class PlayerCam : MonoBehaviour
     {
         _playerController = FindObjectOfType<PlayerController>();
         _playerInteraction = FindObjectOfType<PlayerInteraction>();
-        _camDeffaultPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.y); // Начаальная позиция камеры
+        _camDeffaultPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.y); // Начальная позиция камеры
+        _camPos = _camDeffaultPos;
     }
 
-    void Update() => CameraSwing();
+    void Update()
+    {
+        CameraSwing();
+        SquatOffset();
+    }
     
     private void CameraSwing()
     {
@@ -49,10 +57,18 @@ public class PlayerCam : MonoBehaviour
             _camSwingOffsetX = SwingSmoother(_camSwingOffsetX, 0f);
         }
 
-        transform.localPosition = new Vector3(_camSwingOffsetX + _camDeffaultPos.x, _camSwingOffsetY + _camDeffaultPos.y, 0);
+        transform.localPosition = new Vector3(_camSwingOffsetX + _camPos.x, _camSwingOffsetY + _camPos.y, 0);
     }
 
     // Сглаживание покачивания
     private float SwingSmoother(float axis, float pos) => Mathf.Lerp(axis, pos, Time.deltaTime * (_camSwingMultiplier * _playerController.CharacterSpeed));
+
+    // Смещение камеры по вертикали при приседании
+    private float SquatOffset() => _camPos.y = _playerController.IsSquat ? _camDeffaultPos.y - _squatOffset : _camDeffaultPos.y;
+    
+
+
+
+    /*transform.localPosition = _camDeffaultPos + UnityEngine.Random.insideUnitSphere * 0;*/ 
 }
 

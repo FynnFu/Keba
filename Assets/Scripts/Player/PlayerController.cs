@@ -7,16 +7,23 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Чувствительность мыши")][SerializeField] private float _turnSpeed; // Сенса
     [Tooltip("Скорость персонажа")][SerializeField] private float _defaultSpeed;
     [Tooltip("Скорость спринтаа персонажа")][SerializeField] private float _sprintSpeed;
-    private float _characterSpeed;
+    [Tooltip("Стандартная высота колайдера")][SerializeField] private float _defaultColliderHeight;
+    [Tooltip("Высота коллайдера при приседании")][SerializeField] private float _squatColliderHeight;
+    [Tooltip("Позиция коллайдера при приседании")][SerializeField] private float _squatColliderPos;
     private CharacterController _characterController;
     private Camera _camera;
+    private AudioManager _audioManager;
+    /*private CapsuleCollider _capsuleCollider;*/
     private Vector3 _move;
+    private float _characterSpeed;
     private float _camRotation;
     private float _verticalInput;
     private float _horizontalInput;
     private float _mouseHorizontalInput;
     private float _mouseVerticalInput;
     private float _gravityStrenght = 9.87f;
+    private bool _isSquat;
+    public bool IsSquat { get => _isSquat; }
     public float VerticalInput { get => _verticalInput; }
     public float HorizontalInput { get => _horizontalInput; }
     public float CharacterSpeed { get => _characterSpeed; }
@@ -25,6 +32,8 @@ public class PlayerController : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _camera = GetComponentInChildren<Camera>();
+        _audioManager = FindObjectOfType<AudioManager>();
+        /*_capsuleCollider = GetComponent<CapsuleCollider>();*/
         Cursor.visible = false;
     }
 
@@ -34,12 +43,13 @@ public class PlayerController : MonoBehaviour
         PlayerMove();
         PlayerRotate();
         CamRotate();
+        IsGrounded();
     }
 
     private void GetInput()
     {
+        _isSquat = Input.GetKey(KeyCode.LeftControl);
         _characterSpeed = Input.GetKey(KeyCode.LeftShift) ? _sprintSpeed : _defaultSpeed;
-        /*_characterSpeed = Input.GetKey(KeyCode.LeftShift) ? Mathf.Lerp(_defaultSpeed, _sprintSpeed, 100) : _defaultSpeed;*/
         _verticalInput = Input.GetAxis("Vertical") * _characterSpeed * Time.deltaTime;
         _horizontalInput = Input.GetAxis("Horizontal") * _characterSpeed * Time.deltaTime;
         _mouseHorizontalInput = Input.GetAxis("Mouse X") * _turnSpeed * Time.deltaTime;
@@ -51,6 +61,7 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerMove()
     {
+        SquatCollider();
         _move = (_verticalInput * transform.forward) + (_horizontalInput * transform.right); // Вектор движения
         _characterController.Move(_move); // Движение в пространствве
         _characterController.SimpleMove(Vector3.down * _gravityStrenght); // Гравитация
@@ -65,4 +76,20 @@ public class PlayerController : MonoBehaviour
         _camRotation = Mathf.Clamp(_camRotation, -_maxAngle, _minAngle);
         return _camRotation;
     }
+
+    private void SquatCollider()
+    {
+        if (_isSquat)
+        {
+            _characterController.height = _squatColliderHeight;
+            _characterController.center = new Vector3(0, _squatColliderPos, 0);
+        } 
+        else
+        {
+            _characterController.height = _defaultColliderHeight;
+            _characterController.center = new Vector3(0,0,0);
+        }
+    }
+
+    private void IsGrounded() => _audioManager.enabled = _characterController.isGrounded;
 }

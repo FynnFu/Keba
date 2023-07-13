@@ -1161,6 +1161,34 @@ PrefabInstance:
       propertyPath: _interactionText
       value: 
       objectReference: {fileID: 1896909468}
+    - target: {fileID: 6552582156727647937, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
+      propertyPath: m_Height
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6552582156727647937, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
+      propertyPath: m_Center.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6578897235902660116, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
+      propertyPath: _squatColliderPos
+      value: -0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6578897235902660116, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
+      propertyPath: _squatColliderHeight
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6578897235902660116, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
+      propertyPath: _defaultColliderHeight
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6796943969103468374, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
+      propertyPath: _squatSpeed
+      value: 83.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 6796943969103468374, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
+      propertyPath: _squatOffset
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 6796943969103468374, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
       propertyPath: _camSwingAmountX
       value: 0.05
@@ -1185,6 +1213,10 @@ PrefabInstance:
     - target: {fileID: 4442632431863794436, guid: 0ef823090244f0848a1e8a52bf246cc8, type: 3}
       propertyPath: m_Name
       value: Keba_1_Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442632431863794436, guid: 0ef823090244f0848a1e8a52bf246cc8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8309235811857376885, guid: 0ef823090244f0848a1e8a52bf246cc8, type: 3}
       propertyPath: m_RootOrder
