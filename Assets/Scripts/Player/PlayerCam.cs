@@ -8,16 +8,19 @@ public class PlayerCam : MonoBehaviour
     [Tooltip("Дистанция покачивания по горизонтали")] [Range(0.01f, 1f)] [SerializeField] private float _camSwingAmountX;
     [Tooltip("Позиция камеры в приседе")] [Range(0.1f, 1f)] [SerializeField] private float _squatOffset;
     [Tooltip("Скорость приседания")] [SerializeField] private float _squatSpeed;
+
     private PlayerController _playerController;
     private PlayerInteraction _playerInteraction;
     private Vector3 _camDeffaultPos;
     private Vector3 _camPos;
+
     private float _camSwingSpeed;
     private float _sinusTimerY;
     private float _sinusTimerX;
     private float _camSwingOffsetY;
     private float _camSwingOffsetX;
     private bool _isMoving;
+
     private const float _CamTimeDividerX = 2;
     public float CamSwingOffsetY { get => _camSwingOffsetY; }
 
@@ -25,7 +28,7 @@ public class PlayerCam : MonoBehaviour
     {
         _playerController = FindObjectOfType<PlayerController>();
         _playerInteraction = FindObjectOfType<PlayerInteraction>();
-        _camDeffaultPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.y); // Начальная позиция камеры
+        _camDeffaultPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z); // Начальная позиция камеры
         _camPos = _camDeffaultPos;
     }
 

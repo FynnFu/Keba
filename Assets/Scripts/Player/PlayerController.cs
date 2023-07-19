@@ -9,20 +9,28 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Скорость спринтаа персонажа")][SerializeField] private float _sprintSpeed;
     [Tooltip("Стандартная высота колайдера")][SerializeField] private float _defaultColliderHeight;
     [Tooltip("Высота коллайдера при приседании")][SerializeField] private float _squatColliderHeight;
-    [Tooltip("Позиция коллайдера при приседании")][SerializeField] private float _squatColliderPos;
+    [SerializeField] private float _rayMaxDist;
+
     private CharacterController _characterController;
     private Camera _camera;
     private AudioManager _audioManager;
-    /*private CapsuleCollider _capsuleCollider;*/
     private Vector3 _move;
+    private Vector3 _defaultColliderPos;
+    private Vector3 _squatColliderPos;
+    private Vector3 _rayOrigin; 
+    /*private Vector3 _rayDirection;*/
+
     private float _characterSpeed;
     private float _camRotation;
     private float _verticalInput;
     private float _horizontalInput;
     private float _mouseHorizontalInput;
     private float _mouseVerticalInput;
-    private float _gravityStrenght = 9.87f;
     private bool _isSquat;
+
+    private const float _gravityStrenght = 9.87f;
+    private const float _CollPosDivider = 2f;
+
     public bool IsSquat { get => _isSquat; }
     public float VerticalInput { get => _verticalInput; }
     public float HorizontalInput { get => _horizontalInput; }
@@ -33,7 +41,12 @@ public class PlayerController : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _camera = GetComponentInChildren<Camera>();
         _audioManager = FindObjectOfType<AudioManager>();
-        /*_capsuleCollider = GetComponent<CapsuleCollider>();*/
+
+        _defaultColliderPos = new Vector3(0, 0, 0);
+        _squatColliderPos = new Vector3(0, -(_defaultColliderHeight - _squatColliderHeight) / _CollPosDivider, 0);
+
+        _rayOrigin = new Vector3(0, 0, 0);
+
         Cursor.visible = false;
     }
 
@@ -79,15 +92,17 @@ public class PlayerController : MonoBehaviour
 
     private void SquatCollider()
     {
+        Debug.Log(Physics.Raycast(_rayOrigin, Vector3.forward, _rayMaxDist));
+        Debug.DrawRay(_rayOrigin, Vector3.forward * _rayMaxDist, Color.green);
         if (_isSquat)
         {
             _characterController.height = _squatColliderHeight;
-            _characterController.center = new Vector3(0, _squatColliderPos, 0);
+            _characterController.center = _squatColliderPos;
         } 
         else
         {
             _characterController.height = _defaultColliderHeight;
-            _characterController.center = new Vector3(0,0,0);
+            _characterController.center = _defaultColliderPos;
         }
     }
 

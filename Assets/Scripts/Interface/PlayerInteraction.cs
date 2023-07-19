@@ -9,6 +9,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private GameObject _interactionUI;
     [SerializeField] private TextMeshProUGUI _interactionText;
     [SerializeField] private float _interactionDistance;
+
     private bool _rayValue;
     public bool RayValue { get => _rayValue; }
 

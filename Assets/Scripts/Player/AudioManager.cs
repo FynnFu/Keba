@@ -9,11 +9,15 @@ public class AudioManager : MonoBehaviour
     [Tooltip("Максимальная громкость шагов")][SerializeField] private float _maxVolume;
     [Tooltip("Минимальная тональность шагов")][SerializeField] private float _minPitch;
     [Tooltip("Максимальная тональность шагов")][SerializeField] private float _maxPitch;
+
     private PlayerCam _playerCam;
     private PlayerController _playerController;
     private AudioSource _audioSource;
+
     private int _counter;
+
     private const int _MaxCountVal = 2;
+
     void Start()
     {
         _playerController = FindAnyObjectByType<PlayerController>();
