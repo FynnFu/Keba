@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -33,12 +31,12 @@ public class PlayerInteraction : MonoBehaviour
                 hitSomething = true;
                 _interactionText.text = interactable.GetDescription();
 
-                if (Input.GetKeyDown(KeyCode.E))
+                /*if (Input.GetKeyDown(KeyCode.E))
                 {
                     Debug.Log("InteractionRay");
 
                     interactable.Interact();
-                }
+                }*/
             }
         }
         _interactionUI.SetActive(hitSomething);

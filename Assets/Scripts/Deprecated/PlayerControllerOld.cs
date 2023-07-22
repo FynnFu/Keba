@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 
 public class PlayerControllerOld : MonoBehaviour
 {
@@ -60,4 +60,4 @@ public class PlayerControllerOld : MonoBehaviour
         _camRotation -= _mouseVerticalInput;
         _camRotation = Mathf.Clamp(_camRotation, -_maxAngle, _minAngle);
     }
-}
+}*/
