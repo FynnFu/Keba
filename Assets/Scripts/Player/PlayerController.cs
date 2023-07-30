@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,9 +12,12 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Высота коллайдера при приседании")][SerializeField] private float _squatColliderHeight;
     [SerializeField] private float _rayMaxDist;
 
+    private PlayerControls _playerControls;
     private CharacterController _characterController;
     private Camera _camera;
     private AudioManager _audioManager;
+    private Vector2 _moveInput;
+    private Vector2 _rotateInput;
     private Vector3 _move;
     private Vector3 _defaultColliderPos;
     private Vector3 _squatColliderPos;
@@ -32,9 +36,17 @@ public class PlayerController : MonoBehaviour
     private const float _CollPosDivider = 2f;
 
     public bool IsSquat { get => _isSquat; }
-    public float VerticalInput { get => _verticalInput; }
-    public float HorizontalInput { get => _horizontalInput; }
+    public float VerticalInput { get => _moveInput.y; }
+    public float HorizontalInput { get => _moveInput.x; }
     public float CharacterSpeed { get => _characterSpeed; }
+
+    private void Awake()
+    {
+        _playerControls = new PlayerControls();
+    }
+
+    private void OnEnable() => _playerControls.Player.Enable();
+    private void OnDisable() => _playerControls.Player.Disable();
 
     private void Start()
     {
@@ -61,21 +73,24 @@ public class PlayerController : MonoBehaviour
 
     private void GetInput()
     {
+        _moveInput = _playerControls.Player.Move.ReadValue<Vector2>() * _characterSpeed * Time.deltaTime;
+        _rotateInput = _playerControls.Player.Rotate.ReadValue<Vector2>() * _turnSpeed * Time.deltaTime;
         _isSquat = Input.GetKey(KeyCode.LeftControl);
         _characterSpeed = Input.GetKey(KeyCode.LeftShift) ? _sprintSpeed : _defaultSpeed;
-        _verticalInput = Input.GetAxis("Vertical") * _characterSpeed * Time.deltaTime;
+        /*_verticalInput = Input.GetAxis("Vertical") * _characterSpeed * Time.deltaTime;
         _horizontalInput = Input.GetAxis("Horizontal") * _characterSpeed * Time.deltaTime;
         _mouseHorizontalInput = Input.GetAxis("Mouse X") * _turnSpeed * Time.deltaTime;
-        _mouseVerticalInput = Input.GetAxis("Mouse Y") * _turnSpeed * Time.deltaTime;
+        _mouseVerticalInput = Input.GetAxis("Mouse Y") * _turnSpeed * Time.deltaTime;*/
     }
 
 
-    private void PlayerRotate() => transform.Rotate(Vector3.up * _mouseHorizontalInput);
+    private void PlayerRotate() => transform.Rotate(Vector3.up * _rotateInput.x);
 
     private void PlayerMove()
     {
         SquatCollider();
-        _move = (_verticalInput * transform.forward) + (_horizontalInput * transform.right); // Вектор движения
+        /*_move = (_verticalInput * transform.forward) + (_horizontalInput * transform.right);*/ // Вектор движения
+        _move = ((_moveInput.y * transform.forward) + (_moveInput.x * transform.right)); // Вектор движения
         _characterController.Move(_move); // Движение в пространствве
         _characterController.SimpleMove(Vector3.down * _gravityStrenght); // Гравитация
     }
@@ -85,7 +100,7 @@ public class PlayerController : MonoBehaviour
 
     private float CamCropAngle()
     {
-        _camRotation -= _mouseVerticalInput;
+        _camRotation -= _rotateInput.y;
         _camRotation = Mathf.Clamp(_camRotation, -_maxAngle, _minAngle);
         return _camRotation;
     }
