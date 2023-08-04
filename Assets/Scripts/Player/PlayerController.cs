@@ -1,16 +1,15 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     [Tooltip("Максимальный угол поворота камеры")][SerializeField] private float _maxAngle; // Максимальный угол поворота для камеры
     [Tooltip("Минимальный угол поворота камеры")][SerializeField] private float _minAngle; // Минимальный угол поворота для камеры
     [Tooltip("Чувствительность мыши")][SerializeField] private float _turnSpeed; // Сенса
-    [Tooltip("Скорость персонажа")][SerializeField] private float _defaultSpeed;
-    [Tooltip("Скорость спринтаа персонажа")][SerializeField] private float _sprintSpeed;
-    [Tooltip("Стандартная высота колайдера")][SerializeField] private float _defaultColliderHeight;
-    [Tooltip("Высота коллайдера при приседании")][SerializeField] private float _squatColliderHeight;
-    [SerializeField] private float _rayMaxDist;
+    [Tooltip("Скорость персонажа по умолчанию")][SerializeField] private float _defaultSpeed; // Скорость персонажа по умолчанию
+    [Tooltip("Скорость спринта персонажа")][SerializeField] private float _sprintSpeed; // Скорость спринта персонажа
+    [Tooltip("Стандартная высота колайдера")][SerializeField] private float _defaultColliderHeight; // Стандартная высота колайдера
+    [Tooltip("Высота коллайдера при приседании")][SerializeField] private float _squatColliderHeight; // Высота коллайдера при приседании
+    [Tooltip("Длина луча для приседания")][SerializeField] private float _rayMaxLength; // Позволяет понять отключать ли приседание, если персонах под объектом
 
     private PlayerControls _playerControls;
     private CharacterController _characterController;
@@ -26,18 +25,16 @@ public class PlayerController : MonoBehaviour
 
     private float _characterSpeed;
     private float _camRotation;
-    private float _verticalInput;
-    private float _horizontalInput;
-    private float _mouseHorizontalInput;
-    private float _mouseVerticalInput;
     private bool _isSquat;
+    private bool _isInteract;
 
     private const float _gravityStrenght = 9.87f;
     private const float _CollPosDivider = 2f;
 
-    public bool IsSquat { get => _isSquat; }
     public float VerticalInput { get => _moveInput.y; }
     public float HorizontalInput { get => _moveInput.x; }
+    public bool IsInteract { get => _isInteract; }
+    public bool IsSquat { get => _isSquat; }
     public float CharacterSpeed { get => _characterSpeed; }
 
     private void Awake()
@@ -75,12 +72,9 @@ public class PlayerController : MonoBehaviour
     {
         _moveInput = _playerControls.Player.Move.ReadValue<Vector2>() * _characterSpeed * Time.deltaTime;
         _rotateInput = _playerControls.Player.Rotate.ReadValue<Vector2>() * _turnSpeed * Time.deltaTime;
-        _isSquat = Input.GetKey(KeyCode.LeftControl);
-        _characterSpeed = Input.GetKey(KeyCode.LeftShift) ? _sprintSpeed : _defaultSpeed;
-        /*_verticalInput = Input.GetAxis("Vertical") * _characterSpeed * Time.deltaTime;
-        _horizontalInput = Input.GetAxis("Horizontal") * _characterSpeed * Time.deltaTime;
-        _mouseHorizontalInput = Input.GetAxis("Mouse X") * _turnSpeed * Time.deltaTime;
-        _mouseVerticalInput = Input.GetAxis("Mouse Y") * _turnSpeed * Time.deltaTime;*/
+        _isInteract = _playerControls.Player.ObjInteraction.WasPressedThisFrame();
+        _isSquat = _playerControls.Player.Squat.IsPressed();
+        _characterSpeed = _playerControls.Player.Sprint.IsPressed() ? _sprintSpeed : _defaultSpeed;
     }
 
 
@@ -89,7 +83,6 @@ public class PlayerController : MonoBehaviour
     private void PlayerMove()
     {
         SquatCollider();
-        /*_move = (_verticalInput * transform.forward) + (_horizontalInput * transform.right);*/ // Вектор движения
         _move = ((_moveInput.y * transform.forward) + (_moveInput.x * transform.right)); // Вектор движения
         _characterController.Move(_move); // Движение в пространствве
         _characterController.SimpleMove(Vector3.down * _gravityStrenght); // Гравитация
@@ -107,8 +100,8 @@ public class PlayerController : MonoBehaviour
 
     private void SquatCollider()
     {
-        Debug.Log(Physics.Raycast(_rayOrigin, Vector3.forward, _rayMaxDist));
-        Debug.DrawRay(_rayOrigin, Vector3.forward * _rayMaxDist, Color.green);
+        Debug.Log(Physics.Raycast(_rayOrigin, Vector3.forward, _rayMaxLength));
+        Debug.DrawRay(_rayOrigin, Vector3.forward * _rayMaxLength, Color.green);
         if (_isSquat)
         {
             _characterController.height = _squatColliderHeight;

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -10,12 +8,16 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _interactionText;
     [SerializeField] private float _interactionDistance;
 
+    private PlayerController _playerController;
     private bool _rayValue;
     public bool RayValue { get => _rayValue; }
 
-    void Update() => InteractionRay();
-    
-    void InteractionRay()
+
+    private void Start() => _playerController = FindAnyObjectByType<PlayerController>();
+
+    private void Update() => InteractionRay();
+
+    private void InteractionRay()
     {
         Ray _ray = _camera.ViewportPointToRay(Vector3.one / 2f);
         RaycastHit hit;
@@ -33,7 +35,7 @@ public class PlayerInteraction : MonoBehaviour
                 hitSomething = true;
                 _interactionText.text = interactable.GetDescription();
 
-                if (Input.GetKeyDown(KeyCode.E))
+                if (_playerController.IsInteract)
                 {
                     Debug.Log("InteractionRay");
 
