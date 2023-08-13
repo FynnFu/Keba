@@ -55,18 +55,16 @@ public class PlayerController : MonoBehaviour
         _squatColliderPos = new Vector3(0, -(_defaultColliderHeight - _squatColliderHeight) / _CollPosDivider, 0);
 
         _rayOrigin = new Vector3(0, 0, 0);
-
-        Cursor.visible = false;
     }
 
     private void Update()
     {
+        Cursor.visible = false;
         GetInput();
         PlayerMove();
         PlayerRotate();
         CamRotate();
         IsGrounded();
-        Debug.Log(_moveInput);
     }
 
     private void GetInput()
@@ -76,6 +74,8 @@ public class PlayerController : MonoBehaviour
         _isInteract = _playerControls.Player.ObjInteraction.WasPressedThisFrame();
         _isSquat = _playerControls.Player.Squat.IsPressed();
         _characterSpeed = _playerControls.Player.Sprint.IsPressed() ? _sprintSpeed : _defaultSpeed;
+
+        /*_characterSpeed = Mathf.Lerp(_playerControls.Player.Sprint.IsPressed() ? _sprintSpeed : _defaultSpeed, _characterSpeed, Time.deltaTime * 5);*/
     }
 
 
@@ -103,16 +103,8 @@ public class PlayerController : MonoBehaviour
     {
         /*Debug.Log(Physics.Raycast(_rayOrigin, Vector3.forward, _rayMaxLength));
         Debug.DrawRay(_rayOrigin, Vector3.forward * _rayMaxLength, Color.green);*/
-        if (_isSquat)
-        {
-            _characterController.height = _squatColliderHeight;
-            _characterController.center = _squatColliderPos;
-        } 
-        else
-        {
-            _characterController.height = _defaultColliderHeight;
-            _characterController.center = _defaultColliderPos;
-        }
+        _characterController.height = _isSquat ? _squatColliderHeight : _defaultColliderHeight;
+        _characterController.center = _isSquat ? _squatColliderPos : _defaultColliderPos;
     }
 
     private void IsGrounded() => _audioManager.enabled = _characterController.isGrounded;
