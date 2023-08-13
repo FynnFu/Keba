@@ -5,6 +5,7 @@ using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCou
 public class AudioManager : MonoBehaviour
 {
     [Tooltip("Стандартный звук шагов")][SerializeField] private AudioClip[] _steps;
+    [Tooltip("Общая громкость шагов")][SerializeField] private float _commonVolume;
     [Tooltip("Минимальная громкость шагов")][SerializeField] private float _minVolume;
     [Tooltip("Максимальная громкость шагов")][SerializeField] private float _maxVolume;
     [Tooltip("Минимальная тональность шагов")][SerializeField] private float _minPitch;
@@ -44,7 +45,7 @@ public class AudioManager : MonoBehaviour
 
     private void StepRandomizer()
     {
-        _audioSource.volume = Random.Range(_minVolume, _maxVolume);
+        _audioSource.volume = Random.Range(_minVolume, _maxVolume) * (_playerController.HorizontalInput + _playerController.VerticalInput) * 20;
         _audioSource.pitch = Random.Range(_minPitch, _maxPitch);
     }
 

@@ -66,6 +66,7 @@ public class PlayerController : MonoBehaviour
         PlayerRotate();
         CamRotate();
         IsGrounded();
+        Debug.Log(_moveInput);
     }
 
     private void GetInput()
@@ -100,8 +101,8 @@ public class PlayerController : MonoBehaviour
 
     private void SquatCollider()
     {
-        Debug.Log(Physics.Raycast(_rayOrigin, Vector3.forward, _rayMaxLength));
-        Debug.DrawRay(_rayOrigin, Vector3.forward * _rayMaxLength, Color.green);
+        /*Debug.Log(Physics.Raycast(_rayOrigin, Vector3.forward, _rayMaxLength));
+        Debug.DrawRay(_rayOrigin, Vector3.forward * _rayMaxLength, Color.green);*/
         if (_isSquat)
         {
             _characterController.height = _squatColliderHeight;
