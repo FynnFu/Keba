@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     private float _camRotation;
     private bool _isSquat;
     private bool _isInteract;
+    private bool _isRayHit;
 
     private const float _gravityStrenght = 9.87f;
     private const float _CollPosDivider = 2f;
@@ -35,6 +36,7 @@ public class PlayerController : MonoBehaviour
     public float HorizontalInput { get => _moveInput.x; }
     public bool IsInteract { get => _isInteract; }
     public bool IsSquat { get => _isSquat; }
+    public bool IsRayHit { get => _isRayHit; }
     public float CharacterSpeed { get => _characterSpeed; }
 
     private void Awake()
@@ -54,7 +56,7 @@ public class PlayerController : MonoBehaviour
         _defaultColliderPos = new Vector3(0, 0, 0);
         _squatColliderPos = new Vector3(0, -(_defaultColliderHeight - _squatColliderHeight) / _CollPosDivider, 0);
 
-        _rayOrigin = new Vector3(0, 0, 0);
+        /*_rayOrigin = new Vector3(transform.position.x, transform.position.y, transform.position.z);*/
     }
 
     private void Update()
@@ -73,9 +75,7 @@ public class PlayerController : MonoBehaviour
         _rotateInput = _playerControls.Player.Rotate.ReadValue<Vector2>() * _turnSpeed * Time.deltaTime;
         _isInteract = _playerControls.Player.ObjInteraction.WasPressedThisFrame();
         _isSquat = _playerControls.Player.Squat.IsPressed();
-        _characterSpeed = _playerControls.Player.Sprint.IsPressed() ? _sprintSpeed : _defaultSpeed;
-
-        /*_characterSpeed = Mathf.Lerp(_playerControls.Player.Sprint.IsPressed() ? _sprintSpeed : _defaultSpeed, _characterSpeed, Time.deltaTime * 5);*/
+        _characterSpeed = (_playerControls.Player.Sprint.IsPressed() && !(_isSquat || _isRayHit)) ? _sprintSpeed : _defaultSpeed;
     }
 
 
@@ -101,10 +101,12 @@ public class PlayerController : MonoBehaviour
 
     private void SquatCollider()
     {
-        /*Debug.Log(Physics.Raycast(_rayOrigin, Vector3.forward, _rayMaxLength));
-        Debug.DrawRay(_rayOrigin, Vector3.forward * _rayMaxLength, Color.green);*/
-        _characterController.height = _isSquat ? _squatColliderHeight : _defaultColliderHeight;
-        _characterController.center = _isSquat ? _squatColliderPos : _defaultColliderPos;
+        _rayOrigin = transform.position;
+        _isRayHit = Physics.Raycast(_rayOrigin, Vector3.up, _rayMaxLength + _rayMaxLength + _characterController.height / 2);
+        _characterController.height = (_isSquat || _isRayHit) ? _squatColliderHeight : _defaultColliderHeight;
+        _characterController.center = (_isSquat || _isRayHit) ? _squatColliderPos : _defaultColliderPos;
+        Debug.DrawRay(_rayOrigin, Vector3.up * (_rayMaxLength + _characterController.height / 2), Color.red);
+        Debug.Log(_isRayHit);
     }
 
     private void IsGrounded() => _audioManager.enabled = _characterController.isGrounded;

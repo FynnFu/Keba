@@ -19,6 +19,7 @@ public class PlayerCam : MonoBehaviour
     private float _sinusTimerX;
     private float _camSwingOffsetY;
     private float _camSwingOffsetX;
+    private float _camTargetPos;
     private bool _isMoving;
 
     private const float _CamTimeDividerX = 2;
@@ -61,7 +62,7 @@ public class PlayerCam : MonoBehaviour
     // Смещение камеры по вертикали при приседании
     private void SquatOffset() 
     {
-        float _camTargetPos = _playerController.IsSquat? _camDeffaultPos.y - _squatOffset : _camDeffaultPos.y;
+        _camTargetPos = (_playerController.IsSquat || _playerController.IsRayHit) ? _camDeffaultPos.y - _squatOffset : _camDeffaultPos.y;
         _camPos.y = Mathf.Lerp(_camPos.y, _camTargetPos, Time.deltaTime * _squatSpeed);
     } 
 
