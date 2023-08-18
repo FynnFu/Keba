@@ -10,11 +10,10 @@ public class PlayerInteraction : MonoBehaviour
 
     private PlayerController _playerController;
     private bool _rayValue;
+
     public bool RayValue { get => _rayValue; }
 
-
     private void Start() => _playerController = FindAnyObjectByType<PlayerController>();
-
     private void Update() => InteractionRay();
 
     private void InteractionRay()
