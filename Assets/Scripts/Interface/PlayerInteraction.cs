@@ -9,6 +9,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private float _interactionDistance;
 
     private PlayerController _playerController;
+
     private bool _rayValue;
 
     public bool RayValue { get => _rayValue; }

@@ -4,12 +4,12 @@ using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCou
 
 public class AudioManager : MonoBehaviour
 {
-    [Tooltip("Стандартный звук шагов")][SerializeField] private AudioClip[] _steps;
-    [Tooltip("Общая громкость шагов")][SerializeField] private float _commonVolume;
-    [Tooltip("Минимальная громкость шагов")][SerializeField] private float _minVolume;
-    [Tooltip("Максимальная громкость шагов")][SerializeField] private float _maxVolume;
-    [Tooltip("Минимальная тональность шагов")][SerializeField] private float _minPitch;
-    [Tooltip("Максимальная тональность шагов")][SerializeField] private float _maxPitch;
+    [Tooltip("Стандартный звук шагов")] [SerializeField] private AudioClip[] _steps;
+    [Tooltip("Общая громкость шагов")] [SerializeField] private float _commonVolume;
+    [Tooltip("Минимальная громкость шагов")] [SerializeField] private float _minVolume;
+    [Tooltip("Максимальная громкость шагов")] [SerializeField] private float _maxVolume;
+    [Tooltip("Минимальная тональность шагов")] [SerializeField] private float _minPitch;
+    [Tooltip("Максимальная тональность шагов")] [SerializeField] private float _maxPitch;
 
     private PlayerCam _playerCam;
     private PlayerController _playerController;
@@ -26,42 +26,26 @@ public class AudioManager : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
-    void Update()
-    {
-        PlayStep();
-    }
+    void Update() => PlayStep();
+
 
     private void PlayStep()
     {
         if (_playerCam.CamSwingOffsetY < 0 && _counter < _MaxCountVal) _counter++;
         else if (_playerCam.CamSwingOffsetY >= 0) _counter = 0;
 
-        if (_counter == 1) 
-        { 
+        if (_counter == 1)
+        {
             StepRandomizer();
-            _audioSource.PlayOneShot(_steps[Random.Range(0, _steps.Length)]); 
+            _audioSource.PlayOneShot(_steps[Random.Range(0, _steps.Length)]);
         }
     }
 
     private void StepRandomizer()
     {
-        _audioSource.volume = Random.Range(_minVolume, _maxVolume) * (_playerController.HorizontalInput + _playerController.VerticalInput) * 20;
+        _audioSource.volume = Random.Range(_minVolume, _maxVolume) * _commonVolume;
         _audioSource.pitch = Random.Range(_minPitch, _maxPitch);
     }
-
-
-
-    /*if(_isPlay == false)
-    {
-        _audioSource.PlayOneShot(_stepDefault);
-        _isPlay = true;
-    }
-            else if (_isPlay == true)
-    {
-        _audioSource.PlayOneShot(_stepDefault1);
-        _isPlay = false;
-    639554
-    }*/
 }
 
 

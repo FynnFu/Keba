@@ -1023,7 +1023,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1565697686}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: eba713055edc67145b13d8acc61c192e, type: 3}
@@ -1372,16 +1372,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3036310484039744455, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
       propertyPath: _commonVolume
-      value: 200
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3036310484039744455, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
       propertyPath: _steps.Array.size
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3036310484039744455, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
       propertyPath: _steps.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: a9b9fa2d6cd1fbb469c273ff5438ac0b, type: 3}
+      objectReference: {fileID: 8300000, guid: 20d0f9311fca8ff46a967135815551c8, type: 3}
     - target: {fileID: 3036310484039744455, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
       propertyPath: _steps.Array.data[1]
       value: 
@@ -1455,8 +1455,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6578897235902660116, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
+      propertyPath: _squatSlowdown
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6578897235902660116, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
       propertyPath: _squatColliderPos
       value: -0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6578897235902660116, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
+      propertyPath: _accelerationSpeed
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6578897235902660116, guid: 8405e757298c5c5429ae3bc804351238, type: 3}
       propertyPath: _squatColliderHeight

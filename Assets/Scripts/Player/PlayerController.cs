@@ -1,16 +1,18 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Tooltip("Максимальный угол поворота камеры")][SerializeField] private float _maxAngle; 
-    [Tooltip("Минимальный угол поворота камеры")][SerializeField] private float _minAngle; 
-    [Tooltip("Чувствительность мыши")][SerializeField] private float _turnSpeed;
-    [Tooltip("Скорость персонажа по умолчанию")][SerializeField] private float _defaultSpeed; 
-    [Tooltip("Скорость спринта персонажа")][SerializeField] private float _sprintSpeed; 
-    [Tooltip("Ускорение персонажа")][SerializeField] private float _accelerationSpeed; 
-    [Tooltip("Стандартная высота колайдера")][SerializeField] private float _defaultColliderHeight; 
-    [Tooltip("Высота коллайдера при приседании")][SerializeField] private float _squatColliderHeight; 
-    [Tooltip("Длина луча для приседания")][SerializeField] private float _rayMaxLength; 
+    [Tooltip("Максимальный угол поворота камеры")] [Range(70, 90)] [SerializeField] private int _maxAngle; 
+    [Tooltip("Минимальный угол поворота камеры")] [Range(70, 90)] [SerializeField] private int _minAngle; 
+    [Tooltip("Чувствительность мыши")] [Range(1, 900)] [SerializeField] private int _turnSpeed;
+    [Tooltip("Скорость персонажа по умолчанию")] [Range(1f, 10f)] [SerializeField] private float _defaultSpeed; 
+    [Tooltip("Скорость спринта персонажа")] [Range(1f, 20f)] [SerializeField] private float _sprintSpeed; 
+    [Tooltip("Ускорение персонажа")] [Range(1f, 40f)] [SerializeField] private float _accelerationSpeed; 
+    [Tooltip("Стандартная высота колайдера")] [Range(0.1f, 3f)] [SerializeField] private float _defaultColliderHeight;
+    [Tooltip("Замедление в приседе ( Делитель )")] [Range(0.1f, 3f)] [SerializeField] float _squatSlowdown;
+    [Tooltip("Высота коллайдера в приседе")] [Range(0.1f, 3f)] [SerializeField] private float _squatColliderHeight;
+    [Tooltip("Длина луча для приседания")] [Range(-1f, 2f)] [SerializeField] private float _rayMaxLength;
     //  Позволяет понять отключать ли приседание, если персонах под объектом
 
     private PlayerControls _playerControls;
@@ -34,7 +36,7 @@ public class PlayerController : MonoBehaviour
     private bool _isInteract;
 
     private const float _gravityStrenght = 9.87f;
-    private const float _CollPosDivider = 2f;
+    private const int _CollPosDivider = 2;
 
     public float VerticalInput { get => _moveInput.y; }
     public float HorizontalInput { get => _moveInput.x; }
@@ -68,11 +70,13 @@ public class PlayerController : MonoBehaviour
 
     private void GetInput()
     {
-        _moveInput = _playerControls.Player.Move.ReadValue<Vector2>() * _characterSpeed * Time.deltaTime;
+        _moveInput = _playerControls.Player.Move.ReadValue<Vector2>() * _characterSpeed * Time.deltaTime; 
         _rotateInput = _playerControls.Player.Rotate.ReadValue<Vector2>() * _turnSpeed * Time.deltaTime;
         _isInteract = _playerControls.Player.ObjInteraction.WasPressedThisFrame();
         _isSquat = _playerControls.Player.Squat.IsPressed() || _isRayHit;
-        _characterSpeed = (_playerControls.Player.Sprint.IsPressed() && !_isSquat) ? _sprintSpeed : _defaultSpeed;
+
+        if (_isSquat) _characterSpeed = _defaultSpeed / _squatSlowdown; // Замедление при приседании
+        else _characterSpeed = (_playerControls.Player.Sprint.IsPressed() && !_isSquat) ? _sprintSpeed : _defaultSpeed;
     }
 
     private void PlayerRotate() => transform.Rotate(Vector3.up * _rotateInput.x); // Ротация игрока по горизонтали
@@ -99,7 +103,7 @@ public class PlayerController : MonoBehaviour
     private void SquatCollider() // Поведение коллайдера в приседе
     {
         _rayOrigin = transform.position;
-        _isRayHit = Physics.Raycast(_rayOrigin, Vector3.up, _rayMaxLength + _rayMaxLength + _characterController.height / 2);
+        _isRayHit = Physics.Raycast(_rayOrigin, Vector3.up, _rayMaxLength + _rayMaxLength + _characterController.height / _CollPosDivider);
         _characterController.height = _isSquat ? _squatColliderHeight : _defaultColliderHeight;
         _characterController.center = _isSquat ? _squatColliderPos : _defaultColliderPos;
     }

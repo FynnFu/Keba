@@ -7,7 +7,7 @@ public class PlayerCam : MonoBehaviour
     [Tooltip("Дистанция покачивания по вертикали")] [Range (0.01f, 1f)] [SerializeField] private float _camSwingAmountY;
     [Tooltip("Дистанция покачивания по горизонтали")] [Range(0.01f, 1f)] [SerializeField] private float _camSwingAmountX;
     [Tooltip("Позиция камеры в приседе")] [Range(0.1f, 1f)] [SerializeField] private float _squatOffset;
-    [Tooltip("Скорость приседания")] [SerializeField] private float _squatSpeed;
+    [Tooltip("Скорость приседания")] [Range(1f, 30f)] [SerializeField] private float _squatSpeed;
 
     private PlayerController _playerController;
     private PlayerInteraction _playerInteraction;
@@ -23,8 +23,10 @@ public class PlayerCam : MonoBehaviour
     private bool _isMoving;
 
     private const float _CamTimeDividerX = 2;
+    private const float _InputFallacy = 0.01f;
 
     public float CamSwingOffsetY { get => _camSwingOffsetY; }
+    public float CamSwingAmountY { get => _camSwingAmountY; }
 
     void Start()
     {
@@ -45,11 +47,11 @@ public class PlayerCam : MonoBehaviour
         _camSwingSpeed = _camSwingMultiplier * _playerController.CharacterSpeed; // Скорость покачивания
 
         // Проверяем, если персонаж движется, чтобы активировать покачивание камеры
-        _isMoving = Mathf.Abs(_playerController.VerticalInput) > 0.006f || Mathf.Abs(_playerController.HorizontalInput) > 0.006f;
+        _isMoving = Mathf.Abs(_playerController.VerticalInput) > _InputFallacy || Mathf.Abs(_playerController.HorizontalInput) > _InputFallacy;
 
         // Рассчитываем смещение покачивания камеры при передвижении
-        _sinusTimerY = Mathf.Sin(Time.time * _camSwingSpeed) * _camSwingAmountY; // Позиция смещения по синусу
-        _sinusTimerX = Mathf.Sin(Time.time * _camSwingSpeed / _CamTimeDividerX) * _camSwingAmountX; // Позиция смещения по синусу
+        _sinusTimerY = Mathf.Sin(Time.time * _camSwingSpeed) * _camSwingAmountY; // Позиция смещения по синусу для оси y
+        _sinusTimerX = Mathf.Sin(Time.time * _camSwingSpeed / _CamTimeDividerX) * _camSwingAmountX; // Позиция смещения по синусу для оси x
         _camSwingOffsetY = SwingSmoother(_camSwingOffsetY, _isMoving && _playerInteraction.RayValue == false ? _sinusTimerY : 0f);
         _camSwingOffsetX = SwingSmoother(_camSwingOffsetX, _isMoving && _playerInteraction.RayValue == false ? _sinusTimerX : 0f);
 
