@@ -2,12 +2,17 @@ using UnityEngine;
 
 public class PlayerCam : MonoBehaviour
 {
+    [Header("Покаивание камеры")]
     [SerializeField, Tooltip("Скорость покачивания камеры"), Range(1f, 10f)] private float _camSwingMultiplier;
     [SerializeField, Tooltip("Дистанция покачивания по вертикали"), Range (0.01f, 1f)] private float _camSwingAmountY;
     [SerializeField, Tooltip("Дистанция покачивания по горизонтали"), Range(0.01f, 1f)] private float _camSwingAmountX;
+
+    [Header("Смещение позиции камеры")]
     [SerializeField, Tooltip("Позиция камеры в приседе"), Range(0.1f, 1f)] private float _squatOffset;
     [SerializeField, Tooltip("Скорость приседания"), Range(1f, 30f)] private float _squatSpeed;
-    [SerializeField, Tooltip("Погрешность входных данных для устроййств ввода"), Range(0f, 0.03f)] private float _inputFallacy; // 0.016f +- for stick
+
+    [Header("Погрешность данных для устройств ввода")]
+    [SerializeField, Range(0f, 0.03f)] private float _inputFallacy; // 0.016f +- for stick
 
     private PlayerController _playerController;
     private PlayerInteraction _playerInteraction;

@@ -2,13 +2,22 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Обрезка угла наклона камеры")]
     [SerializeField, Tooltip("Максимальный угол поворота камеры"), Range(70, 90)] private int _maxAngle; 
-    [SerializeField, Tooltip("Минимальный угол поворота камеры"), Range(70, 90)] private int _minAngle; 
+    [SerializeField, Tooltip("Минимальный угол поворота камеры"), Range(70, 90)] private int _minAngle;
+
+    [Header("Чувствительность")]
     [SerializeField, Tooltip("Чувствительность мыши"), Range(1, 900)] private int _turnSpeed;
+
+    [Header("Скорость")]
     [SerializeField, Tooltip("Скорость персонажа по умолчанию"), Range(1f, 10f)] private float _defaultSpeed; 
     [SerializeField, Tooltip("Скорость спринта персонажа"), Range(1f, 20f)] private float _sprintSpeed; 
-    [SerializeField, Tooltip("Ускорение персонажа"), Range(1f, 40f)] private float _accelerationSpeed; 
+    [SerializeField, Tooltip("Ускорение персонажа"), Range(1f, 40f)] private float _accelerationSpeed;
+
+    [Header("Коллайдер")]
     [SerializeField, Tooltip("Стандартная высота колайдера"), Range(0.1f, 3f)] private float _defaultColliderHeight;
+
+    [Header("Приседание")]
     [SerializeField, Tooltip("Замедление в приседе ( Делитель )"), Range(0.1f, 3f)] float _squatSlowdown;
     [SerializeField, Tooltip("Высота коллайдера в приседе"), Range(0.1f, 3f)] private float _squatColliderHeight;
     [SerializeField, Tooltip("Длина луча для приседания"), Range(-1f, 2f)] private float _rayMaxLength;

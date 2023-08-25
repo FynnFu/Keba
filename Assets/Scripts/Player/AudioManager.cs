@@ -2,10 +2,17 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    [SerializeField, Tooltip("Стандартный звук шагов")] private AudioClip[] _steps;
+    [Header("Общая громкость")]
     [SerializeField, Tooltip("Общая громкость шагов")] private float _commonVolume;
+
+    [Header("Звуки шагов")]
+    [SerializeField, Tooltip("Стандартный звук шагов")] private AudioClip[] _steps;
+
+    [Header("Громкость")]
     [SerializeField, Tooltip("Минимальная громкость шагов")] private float _minVolume;
     [SerializeField, Tooltip("Максимальная громкость шагов")] private float _maxVolume;
+
+    [Header("Тональность")]
     [SerializeField, Tooltip("Минимальная тональность шагов")] private float _minPitch;
     [SerializeField, Tooltip("Максимальная тональность шагов")] private float _maxPitch;
 
