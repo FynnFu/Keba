@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Menu",
+                    "type": "Button",
+                    "id": "ecbe9596-9040-423a-8b50-35e3b30f307e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -123,7 +132,7 @@
                     "id": "0c67fa6a-655f-4d93-8aef-ad43cbd432d3",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "ScaleVector2(x=10,y=10)",
                     "groups": "",
                     "action": "Rotate",
                     "isComposite": false,
@@ -134,7 +143,7 @@
                     "id": "e2b611ee-8d6e-46e5-8a48-abf00ece4137",
                     "path": "<Mouse>/delta",
                     "interactions": "",
-                    "processors": "ScaleVector2(x=0.08,y=0.08)",
+                    "processors": "",
                     "groups": "",
                     "action": "Rotate",
                     "isComposite": false,
@@ -203,6 +212,45 @@
                     "processors": "",
                     "groups": "",
                     "action": "ObjInteraction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a03530a7-de5f-49e2-b48e-44ccf8fa08ec",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Inteface",
+            "id": "b59c5c94-6c3c-47e7-b658-6a1cd633eb37",
+            "actions": [
+                {
+                    "name": "Menu",
+                    "type": "Button",
+                    "id": "903ea472-b1bc-4d4c-8c98-476a6ed3178c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "92b68006-51cc-4533-a560-a5da2a80d8bd",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

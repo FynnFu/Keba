@@ -71,6 +71,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""ecbe9596-9040-423a-8b50-35e3b30f307e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -145,7 +154,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""0c67fa6a-655f-4d93-8aef-ad43cbd432d3"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""ScaleVector2(x=10,y=10)"",
                     ""groups"": """",
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
@@ -156,7 +165,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""e2b611ee-8d6e-46e5-8a48-abf00ece4137"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""ScaleVector2(x=0.08,y=0.08)"",
+                    ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
@@ -227,6 +236,45 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""ObjInteraction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a03530a7-de5f-49e2-b48e-44ccf8fa08ec"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Inteface"",
+            ""id"": ""b59c5c94-6c3c-47e7-b658-6a1cd633eb37"",
+            ""actions"": [
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""903ea472-b1bc-4d4c-8c98-476a6ed3178c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""92b68006-51cc-4533-a560-a5da2a80d8bd"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -240,6 +288,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Squat = m_Player.FindAction("Squat", throwIfNotFound: true);
         m_Player_ObjInteraction = m_Player.FindAction("ObjInteraction", throwIfNotFound: true);
+        m_Player_Menu = m_Player.FindAction("Menu", throwIfNotFound: true);
+        // Inteface
+        m_Inteface = asset.FindActionMap("Inteface", throwIfNotFound: true);
+        m_Inteface_Menu = m_Inteface.FindAction("Menu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -306,6 +358,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Squat;
     private readonly InputAction m_Player_ObjInteraction;
+    private readonly InputAction m_Player_Menu;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -315,6 +368,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Squat => m_Wrapper.m_Player_Squat;
         public InputAction @ObjInteraction => m_Wrapper.m_Player_ObjInteraction;
+        public InputAction @Menu => m_Wrapper.m_Player_Menu;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -339,6 +393,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ObjInteraction.started += instance.OnObjInteraction;
             @ObjInteraction.performed += instance.OnObjInteraction;
             @ObjInteraction.canceled += instance.OnObjInteraction;
+            @Menu.started += instance.OnMenu;
+            @Menu.performed += instance.OnMenu;
+            @Menu.canceled += instance.OnMenu;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -358,6 +415,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ObjInteraction.started -= instance.OnObjInteraction;
             @ObjInteraction.performed -= instance.OnObjInteraction;
             @ObjInteraction.canceled -= instance.OnObjInteraction;
+            @Menu.started -= instance.OnMenu;
+            @Menu.performed -= instance.OnMenu;
+            @Menu.canceled -= instance.OnMenu;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -375,6 +435,52 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Inteface
+    private readonly InputActionMap m_Inteface;
+    private List<IIntefaceActions> m_IntefaceActionsCallbackInterfaces = new List<IIntefaceActions>();
+    private readonly InputAction m_Inteface_Menu;
+    public struct IntefaceActions
+    {
+        private @PlayerControls m_Wrapper;
+        public IntefaceActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Menu => m_Wrapper.m_Inteface_Menu;
+        public InputActionMap Get() { return m_Wrapper.m_Inteface; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(IntefaceActions set) { return set.Get(); }
+        public void AddCallbacks(IIntefaceActions instance)
+        {
+            if (instance == null || m_Wrapper.m_IntefaceActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_IntefaceActionsCallbackInterfaces.Add(instance);
+            @Menu.started += instance.OnMenu;
+            @Menu.performed += instance.OnMenu;
+            @Menu.canceled += instance.OnMenu;
+        }
+
+        private void UnregisterCallbacks(IIntefaceActions instance)
+        {
+            @Menu.started -= instance.OnMenu;
+            @Menu.performed -= instance.OnMenu;
+            @Menu.canceled -= instance.OnMenu;
+        }
+
+        public void RemoveCallbacks(IIntefaceActions instance)
+        {
+            if (m_Wrapper.m_IntefaceActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IIntefaceActions instance)
+        {
+            foreach (var item in m_Wrapper.m_IntefaceActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_IntefaceActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public IntefaceActions @Inteface => new IntefaceActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -382,5 +488,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnSquat(InputAction.CallbackContext context);
         void OnObjInteraction(InputAction.CallbackContext context);
+        void OnMenu(InputAction.CallbackContext context);
+    }
+    public interface IIntefaceActions
+    {
+        void OnMenu(InputAction.CallbackContext context);
     }
 }

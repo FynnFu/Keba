@@ -1,15 +1,13 @@
-using System.Diagnostics.Tracing;
 using UnityEngine;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class AudioManager : MonoBehaviour
 {
-    [Tooltip("Стандартный звук шагов")] [SerializeField] private AudioClip[] _steps;
-    [Tooltip("Общая громкость шагов")] [SerializeField] private float _commonVolume;
-    [Tooltip("Минимальная громкость шагов")] [SerializeField] private float _minVolume;
-    [Tooltip("Максимальная громкость шагов")] [SerializeField] private float _maxVolume;
-    [Tooltip("Минимальная тональность шагов")] [SerializeField] private float _minPitch;
-    [Tooltip("Максимальная тональность шагов")] [SerializeField] private float _maxPitch;
+    [SerializeField, Tooltip("Стандартный звук шагов")] private AudioClip[] _steps;
+    [SerializeField, Tooltip("Общая громкость шагов")] private float _commonVolume;
+    [SerializeField, Tooltip("Минимальная громкость шагов")] private float _minVolume;
+    [SerializeField, Tooltip("Максимальная громкость шагов")] private float _maxVolume;
+    [SerializeField, Tooltip("Минимальная тональность шагов")] private float _minPitch;
+    [SerializeField, Tooltip("Максимальная тональность шагов")] private float _maxPitch;
 
     private PlayerCam _playerCam;
     private PlayerController _playerController;

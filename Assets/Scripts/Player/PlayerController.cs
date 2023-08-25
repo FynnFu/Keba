@@ -1,18 +1,17 @@
-using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Tooltip("Максимальный угол поворота камеры")] [Range(70, 90)] [SerializeField] private int _maxAngle; 
-    [Tooltip("Минимальный угол поворота камеры")] [Range(70, 90)] [SerializeField] private int _minAngle; 
-    [Tooltip("Чувствительность мыши")] [Range(1, 900)] [SerializeField] private int _turnSpeed;
-    [Tooltip("Скорость персонажа по умолчанию")] [Range(1f, 10f)] [SerializeField] private float _defaultSpeed; 
-    [Tooltip("Скорость спринта персонажа")] [Range(1f, 20f)] [SerializeField] private float _sprintSpeed; 
-    [Tooltip("Ускорение персонажа")] [Range(1f, 40f)] [SerializeField] private float _accelerationSpeed; 
-    [Tooltip("Стандартная высота колайдера")] [Range(0.1f, 3f)] [SerializeField] private float _defaultColliderHeight;
-    [Tooltip("Замедление в приседе ( Делитель )")] [Range(0.1f, 3f)] [SerializeField] float _squatSlowdown;
-    [Tooltip("Высота коллайдера в приседе")] [Range(0.1f, 3f)] [SerializeField] private float _squatColliderHeight;
-    [Tooltip("Длина луча для приседания")] [Range(-1f, 2f)] [SerializeField] private float _rayMaxLength;
+    [SerializeField, Tooltip("Максимальный угол поворота камеры"), Range(70, 90)] private int _maxAngle; 
+    [SerializeField, Tooltip("Минимальный угол поворота камеры"), Range(70, 90)] private int _minAngle; 
+    [SerializeField, Tooltip("Чувствительность мыши"), Range(1, 900)] private int _turnSpeed;
+    [SerializeField, Tooltip("Скорость персонажа по умолчанию"), Range(1f, 10f)] private float _defaultSpeed; 
+    [SerializeField, Tooltip("Скорость спринта персонажа"), Range(1f, 20f)] private float _sprintSpeed; 
+    [SerializeField, Tooltip("Ускорение персонажа"), Range(1f, 40f)] private float _accelerationSpeed; 
+    [SerializeField, Tooltip("Стандартная высота колайдера"), Range(0.1f, 3f)] private float _defaultColliderHeight;
+    [SerializeField, Tooltip("Замедление в приседе ( Делитель )"), Range(0.1f, 3f)] float _squatSlowdown;
+    [SerializeField, Tooltip("Высота коллайдера в приседе"), Range(0.1f, 3f)] private float _squatColliderHeight;
+    [SerializeField, Tooltip("Длина луча для приседания"), Range(-1f, 2f)] private float _rayMaxLength;
     //  Позволяет понять отключать ли приседание, если персонах под объектом
 
     private PlayerControls _playerControls;
@@ -35,7 +34,7 @@ public class PlayerController : MonoBehaviour
     private bool _isRayHit;
     private bool _isInteract;
 
-    private const float _gravityStrenght = 9.87f;
+    private const float _GravityStrenght = 9.87f;
     private const int _CollPosDivider = 2;
 
     public float VerticalInput { get => _moveInput.y; }
@@ -45,7 +44,7 @@ public class PlayerController : MonoBehaviour
     public bool IsSquat { get => _isSquat; }
     public bool IsRayHit { get => _isRayHit; }
 
-    private void Awake() =>_playerControls = new PlayerControls();
+    private void Awake() => _playerControls = new PlayerControls();
     private void OnEnable() => _playerControls.Player.Enable();
     private void OnDisable() => _playerControls.Player.Disable();
 
@@ -88,7 +87,7 @@ public class PlayerController : MonoBehaviour
         _moveX = Mathf.Lerp(_moveX, _moveInput.x, Time.deltaTime * _accelerationSpeed);
         _move = ((_moveY * transform.forward) + (_moveX * transform.right)); // Вектор движения
         _characterController.Move(_move); // Движение в пространствве
-        _characterController.SimpleMove(Vector3.down * _gravityStrenght); // Гравитация
+        _characterController.SimpleMove(Vector3.down * _GravityStrenght); // Гравитация
     }
 
     private void CamRotate() => _camera.transform.localRotation = Quaternion.Euler(CamCropAngle(), 0f, 0f);
@@ -103,7 +102,7 @@ public class PlayerController : MonoBehaviour
     private void SquatCollider() // Поведение коллайдера в приседе
     {
         _rayOrigin = transform.position;
-        _isRayHit = Physics.Raycast(_rayOrigin, Vector3.up, _rayMaxLength + _rayMaxLength + _characterController.height / _CollPosDivider);
+        _isRayHit = Physics.Raycast(_rayOrigin, Vector3.up, _rayMaxLength + _characterController.height / _CollPosDivider);
         _characterController.height = _isSquat ? _squatColliderHeight : _defaultColliderHeight;
         _characterController.center = _isSquat ? _squatColliderPos : _defaultColliderPos;
     }

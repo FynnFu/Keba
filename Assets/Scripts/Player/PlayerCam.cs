@@ -1,13 +1,13 @@
-using System;
 using UnityEngine;
 
 public class PlayerCam : MonoBehaviour
 {
-    [Tooltip("Скорость покачивания камеры")] [Range(1f, 10f)] [SerializeField] private float _camSwingMultiplier;
-    [Tooltip("Дистанция покачивания по вертикали")] [Range (0.01f, 1f)] [SerializeField] private float _camSwingAmountY;
-    [Tooltip("Дистанция покачивания по горизонтали")] [Range(0.01f, 1f)] [SerializeField] private float _camSwingAmountX;
-    [Tooltip("Позиция камеры в приседе")] [Range(0.1f, 1f)] [SerializeField] private float _squatOffset;
-    [Tooltip("Скорость приседания")] [Range(1f, 30f)] [SerializeField] private float _squatSpeed;
+    [SerializeField, Tooltip("Скорость покачивания камеры"), Range(1f, 10f)] private float _camSwingMultiplier;
+    [SerializeField, Tooltip("Дистанция покачивания по вертикали"), Range (0.01f, 1f)] private float _camSwingAmountY;
+    [SerializeField, Tooltip("Дистанция покачивания по горизонтали"), Range(0.01f, 1f)] private float _camSwingAmountX;
+    [SerializeField, Tooltip("Позиция камеры в приседе"), Range(0.1f, 1f)] private float _squatOffset;
+    [SerializeField, Tooltip("Скорость приседания"), Range(1f, 30f)] private float _squatSpeed;
+    [SerializeField, Tooltip("Погрешность входных данных для устроййств ввода"), Range(0f, 0.03f)] private float _inputFallacy; // 0.016f +- for stick
 
     private PlayerController _playerController;
     private PlayerInteraction _playerInteraction;
@@ -23,7 +23,6 @@ public class PlayerCam : MonoBehaviour
     private bool _isMoving;
 
     private const float _CamTimeDividerX = 2;
-    private const float _InputFallacy = 0.01f;
 
     public float CamSwingOffsetY { get => _camSwingOffsetY; }
     public float CamSwingAmountY { get => _camSwingAmountY; }
@@ -47,7 +46,7 @@ public class PlayerCam : MonoBehaviour
         _camSwingSpeed = _camSwingMultiplier * _playerController.CharacterSpeed; // Скорость покачивания
 
         // Проверяем, если персонаж движется, чтобы активировать покачивание камеры
-        _isMoving = Mathf.Abs(_playerController.VerticalInput) > _InputFallacy || Mathf.Abs(_playerController.HorizontalInput) > _InputFallacy;
+        _isMoving = Mathf.Abs(_playerController.VerticalInput) > _inputFallacy || Mathf.Abs(_playerController.HorizontalInput) > _inputFallacy;
 
         // Рассчитываем смещение покачивания камеры при передвижении
         _sinusTimerY = Mathf.Sin(Time.time * _camSwingSpeed) * _camSwingAmountY; // Позиция смещения по синусу для оси y
