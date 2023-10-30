@@ -44,6 +44,7 @@ public class PlayerCam : MonoBehaviour
     {
         CameraSwing();
         SquatOffset();
+        /*Debug.Log(_camSwingSpeed);*/
     }
     
     private void CameraSwing()
@@ -63,7 +64,7 @@ public class PlayerCam : MonoBehaviour
     }
 
     // Сглаживание покачивания
-    private float SwingSmoother(float start, float end) => Mathf.Lerp(start, end, Time.deltaTime * (_camSwingMultiplier * _playerController.CharacterSpeed));
+    private float SwingSmoother(float start, float end) => Mathf.Lerp(start, end, Time.deltaTime * _camSwingSpeed);
 
     // Смещение камеры по вертикали при приседании
     private void SquatOffset() 

@@ -1,4 +1,7 @@
+using System.Threading;
+using System.Timers;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -39,7 +42,9 @@ public class PlayerController : MonoBehaviour
     private float _camRotation;
     private float _moveY;
     private float _moveX;
+    private float _time;
     private bool _isSquat;
+    private bool _isSprint;
     private bool _isRayHit;
     private bool _isInteract;
 
@@ -70,9 +75,11 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.visible = false;
         GetInput();
-        PlayerMove();
-        PlayerRotate();
-        CamRotate();
+        SpeedRegulate();
+        PlayerMove(_moveInput);
+        PlayerRotate(_rotateInput.x);
+        CamRotate(_rotateInput.y);
+        SquatCollider(_isSquat);
         IsGrounded();
     }
 
@@ -82,38 +89,59 @@ public class PlayerController : MonoBehaviour
         _rotateInput = _playerControls.Player.Rotate.ReadValue<Vector2>() * _turnSpeed * Time.deltaTime;
         _isInteract = _playerControls.Player.ObjInteraction.WasPressedThisFrame();
         _isSquat = _playerControls.Player.Squat.IsPressed() || _isRayHit;
-
-        if (_isSquat) _characterSpeed = _defaultSpeed / _squatSlowdown; // Замедление при приседании
-        else _characterSpeed = (_playerControls.Player.Sprint.IsPressed() && !_isSquat) ? _sprintSpeed : _defaultSpeed;
+        _isSprint = _playerControls.Player.Sprint.IsPressed() && !_isSquat;
+        /*_isSquat = _playerControls.Player.Squat.IsPressed() || _isRayHit;*/
     }
 
-    private void PlayerRotate() => transform.Rotate(Vector3.up * _rotateInput.x); // Ротация игрока по горизонтали
-
-    private void PlayerMove()
+    private void PlayerMove(Vector2 moveInput)
     {
-        SquatCollider();
-        _moveY = Mathf.Lerp(_moveY, _moveInput.y, Time.deltaTime * _accelerationSpeed);
-        _moveX = Mathf.Lerp(_moveX, _moveInput.x, Time.deltaTime * _accelerationSpeed);
+        _moveY = Mathf.Lerp(_moveY, moveInput.y, Time.deltaTime * _accelerationSpeed);
+        _moveX = Mathf.Lerp(_moveX, moveInput.x, Time.deltaTime * _accelerationSpeed);
         _move = ((_moveY * transform.forward) + (_moveX * transform.right)); // Вектор движения
         _characterController.Move(_move); // Движение в пространствве
         _characterController.SimpleMove(Vector3.down * _GravityStrenght); // Гравитация
     }
 
-    private void CamRotate() => _camera.transform.localRotation = Quaternion.Euler(CamCropAngle(), 0f, 0f);
+    private void PlayerRotate(float inputValue) => transform.Rotate(Vector3.up * inputValue); // Ротация игрока по горизонтали
 
-    private float CamCropAngle() // Обрезка наклона камеры до максимального и минимального 
+    private void CamRotate(float inputValue) => _camera.transform.localRotation = Quaternion.Euler(CamCropAngle(inputValue), 0f, 0f);
+
+    private float CamCropAngle(float valueToCrop) // Обрезка наклона камеры до максимального и минимального 
     {
-        _camRotation -= _rotateInput.y;
+        _camRotation -= valueToCrop;
         _camRotation = Mathf.Clamp(_camRotation, -_maxAngle, _minAngle);
         return _camRotation;
     }
 
-    private void SquatCollider() // Поведение коллайдера в приседе
+    private void SpeedRegulate()
     {
+        if (_isSquat) _characterSpeed = _defaultSpeed / _squatSlowdown; // Замедление при приседании
+        else _characterSpeed = SprintActivationDelay(_isSprint, 1f, ref _time) ? _sprintSpeed : _defaultSpeed;
+
+
+        bool SprintActivationDelay(bool inputVal, float delay, ref float timer)
+        {
+            if (Time.time > timer)
+            {
+                if (inputVal)
+                {
+                    return true;
+                }
+                else timer = Time.time + delay;
+                return false;
+            }
+            return false;
+        }
+        /*if (_isSquat) _characterSpeed = _defaultSpeed / _squatSlowdown; // Замедление при приседании
+        else _characterSpeed = _isSprint ? _sprintSpeed : _defaultSpeed;*/
+    }
+    private void SquatCollider(bool toggleVal) // Поведение коллайдера в приседе
+    {
+        _characterController.height = toggleVal ? _squatColliderHeight : _defaultColliderHeight;
+        _characterController.center = toggleVal ? _squatColliderPos : _defaultColliderPos;
         _rayOrigin = transform.position;
         _isRayHit = Physics.Raycast(_rayOrigin, Vector3.up, _rayMaxLength + _characterController.height / _CollPosDivider);
-        _characterController.height = _isSquat ? _squatColliderHeight : _defaultColliderHeight;
-        _characterController.center = _isSquat ? _squatColliderPos : _defaultColliderPos;
+        Debug.DrawRay(_rayOrigin, Vector3.up, Color.red, _rayMaxLength + _characterController.height / _CollPosDivider);
     }
 
     private void IsGrounded() => _audioManager.enabled = _characterController.isGrounded;
